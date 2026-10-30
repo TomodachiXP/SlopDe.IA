@@ -1,0 +1,1291 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+
+
+<title>SlopDe.IA</title>
+<style>
+:root{--bg:#1d2b22;--card:#fffaf0;--ink:#2b2a33;--acc:#ff8a5c;--acc2:#5a47c4}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d2b22;--card:#fffaf0;--ink:#2b2a33}}
+:root[data-theme="dark"]{--bg:#1d2b22;--card:#fffaf0;--ink:#2b2a33}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+canvas{position:fixed;inset:0;display:block;touch-action:none}
+.ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(20,32,26,.75);backdrop-filter:blur(4px);padding:16px;overflow:auto;touch-action:pan-y}
+.hidden{display:none!important}
+.card{background:var(--card);color:var(--ink);border-radius:22px;padding:20px;width:100%;max-width:440px;box-shadow:0 12px 40px rgba(0,0,0,.35);text-align:center}
+.card h1{margin:0;font-size:32px;letter-spacing:-1px}
+.card h1 span{color:var(--acc)}
+.sub{margin:2px 0 12px;color:#6b6a75;font-size:14px}
+input{width:100%;padding:12px 14px;border-radius:14px;border:2px solid #e6dfd0;font-size:16px;margin-bottom:10px;background:#fff;color:var(--ink);outline:none;user-select:text;-webkit-user-select:text}
+input:focus{border-color:var(--acc)}
+#classes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.cls{border:3px solid #e6dfd0;background:#fff;border-radius:16px;padding:8px 4px;cursor:pointer;font:inherit;color:var(--ink)}
+.cls .em{font-size:28px;display:block}
+.cls b{font-size:13px}
+.cls small{display:block;font-size:10.5px;color:#7a7985;margin-top:2px;line-height:1.2}
+.cls.sel{border-color:var(--acc);background:#fff1e8;transform:translateY(-2px)}
+button.big,button.sm{border:0;border-radius:14px;font:inherit;font-weight:800;cursor:pointer;color:#fff;background:var(--acc);padding:13px;width:100%;font-size:17px;box-shadow:0 4px 0 #c9633b}
+button.sm{background:var(--acc2);box-shadow:0 3px 0 #3d2f96;font-size:15px;padding:10px;margin-top:2px}
+button:active{transform:translateY(2px)}
+details{margin-top:12px;text-align:left;font-size:13px}
+summary{cursor:pointer;font-weight:700;text-align:center}
+details small{display:block;color:#7a7985;margin:6px 0;line-height:1.35}
+#msg{font-size:13px;color:#c0392b;min-height:16px;margin-top:6px;text-align:center}
+.hint{margin-top:10px;font-size:11.5px;color:#7a7985}
+#upbtn{position:fixed;right:12px;top:128px;background:#ffd34d;color:#4a3300;font-weight:900;border-radius:14px;padding:9px 14px;font-size:15px;box-shadow:0 3px 0 #c79a1d;cursor:pointer;z-index:5}
+#upbtn.pulse{animation:pl 1s infinite}
+@keyframes pl{50%{transform:scale(1.1)}}
+#ups{position:fixed;right:12px;top:172px;width:min(250px,calc(100vw - 24px));background:rgba(255,250,240,.96);border-radius:16px;padding:8px;z-index:5;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+#ups button{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;border-radius:11px;background:#fff;margin:4px 0;padding:9px 10px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;box-shadow:0 2px 0 #e0d7c4}
+#ups button.ok{background:#d9f7df;box-shadow:0 2px 0 #7fcf90;font-weight:800}
+#ups button:disabled{opacity:.55;cursor:default}
+#ups .t{font-size:12px;color:#7a7985;text-align:center;padding:2px 0 4px}
+input[type=checkbox]{width:auto;margin:0 8px 0 0;accent-color:var(--acc)}
+.pvp{margin-top:14px;padding-top:12px;border-top:2px dashed #e6dfd0;text-align:left}
+.pvp .sep{font-weight:800;text-align:center;margin-bottom:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.two button{margin:0}
+.panel{margin-top:10px}
+.panel small{display:block;color:#7a7985;font-size:12.5px;line-height:1.35;margin-bottom:8px}
+.chip{border:2px solid #e6dfd0;background:#fff;border-radius:12px;padding:9px;font:inherit;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer}
+.chip.sel{border-color:var(--acc);background:#fff1e8}
+.chk{display:flex;align-items:center;font-size:14px;margin:2px 0 10px;cursor:pointer}
+#rcode{text-transform:uppercase;letter-spacing:4px;text-align:center;font-weight:800;font-size:20px}
+#menubtn{position:fixed;left:10px;top:122px;z-index:5;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:12px;padding:7px 12px;font:inherit;font-weight:800;font-size:13px;cursor:pointer}
+#room{position:fixed;left:10px;top:160px;z-index:5;width:min(270px,calc(100vw - 20px));max-height:calc(100% - 172px);overflow:auto;background:rgba(255,250,240,.97);color:var(--ink);border-radius:16px;padding:12px;box-shadow:0 8px 24px rgba(0,0,0,.35);touch-action:pan-y;font-size:13px}
+#room .rt{font-weight:800;margin:6px 0 4px}
+#room .rc{font-size:30px;font-weight:900;letter-spacing:5px;color:var(--acc2);text-align:center;margin:2px 0}
+#room small{display:block;color:#7a7985;line-height:1.35;margin-bottom:6px}
+#room input{padding:8px 10px;font-size:13px;margin-bottom:8px}
+#room .plist{line-height:1.5;margin-bottom:10px}
+#room button{margin-top:6px}
+#toast{position:fixed;left:50%;top:108px;transform:translateX(-50%);z-index:6;background:rgba(0,0,0,.72);color:#fff;border-radius:12px;padding:8px 14px;font-weight:700;font-size:13px;pointer-events:none;max-width:90vw;text-align:center}
+button:disabled{opacity:.6;cursor:default}
+#dead h2{margin:0 0 6px;font-size:26px}
+#dead p{margin:4px 0 14px;color:#55545f}
+#dead .row{display:flex;gap:8px}
+</style>
+
+
+<canvas id="c"></canvas>
+<div id="toast" class="hidden"></div>
+<button id="menubtn" class="hidden">☰ Menu</button>
+<div id="room" class="hidden"></div>
+
+<div id="upbtn" class="hidden">⬆ Upgrades</div>
+<div id="ups" class="hidden"></div>
+
+<div id="menu" class="ov"><div class="card">
+  <h1>SlopDe<span>.IA</span></h1>
+  <div class="sub">Evolua sem parar, domine o mapa e vença os outros bichos!</div>
+  <input id="name" maxlength="14" placeholder="Seu apelido" autocomplete="off">
+  <div id="classes"></div>
+  <button id="play" class="big">▶ Jogar</button>
+  <div class="pvp">
+    <div class="sep">⚔️ Arena PVP online</div>
+    <div class="two"><button id="mkroom" class="sm">Criar sala</button><button id="joinroom" class="sm">Entrar em sala</button></div>
+    <div id="pmake" class="panel hidden">
+      <small>Você vira o servidor: seus amigos entram pelo código, direto na sua conexão. Mantenha esta tela aberta enquanto jogam.</small>
+      <div class="two" style="margin-bottom:8px"><button id="pwno" class="chip sel">Sem senha</button><button id="pwyes" class="chip">Com senha</button></div>
+      <input id="rpw" class="hidden" maxlength="16" placeholder="Defina a senha" autocomplete="off">
+      <label class="chk"><input type="checkbox" id="rbots">Adicionar bots na sala</label>
+      <button id="rgo" class="big">Abrir sala e jogar</button>
+    </div>
+    <div id="pjoin" class="panel hidden">
+      <input id="rcode" maxlength="6" placeholder="CÓDIGO" autocomplete="off">
+      <input id="rjpw" maxlength="16" placeholder="Senha (se a sala tiver)" autocomplete="off">
+      <button id="rjgo" class="big">Entrar na sala</button>
+    </div>
+    <div id="msg"></div>
+  </div>
+  <div class="hint" id="hint"></div>
+</div></div>
+
+<div id="dead" class="ov hidden"><div class="card">
+  <h2>💥 Você caiu!</h2>
+  <p id="deadtxt"></p>
+  <div class="row"><button id="again" class="big">↻ Jogar de novo</button><button id="tomenu" class="sm" style="margin:0">Menu</button></div>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script>
+/* SlopDe.IA - motor do jogo (roda no navegador e no Node) */
+(function (root) {
+'use strict';
+const W = 3600, H = 3600, CX = W / 2, CY = H / 2, R = Math.random, TAU = Math.PI * 2;
+const rnd = (a, b) => a + R() * (b - a);
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const angDiff = (a, b) => { let d = a - b; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU; return d; };
+const r1 = v => Math.round(v);
+
+const CLASSES = {
+  guerreiro: { name: 'Guerreiro', emoji: '⚔️', desc: 'Corpo a corpo. Espada e Giro Ciclone.', color: '#ff8a5c', dark: '#b9502f', hp: 140, speed: 212, range: 78, cd: 0.42, skillCd: 6, skillCd2: 8, labels: ['Espada', 'Habilidades', 'Armadura', 'Vitalidade'],
+    sk: [{ name: 'Giro Ciclone', k: 'circle', r: 112, icon: '🌀' }, { name: 'Golpe Sísmico', k: 'cone', range: 230, ang: .7, icon: '💥' }] },
+  mago:      { name: 'Mago', emoji: '🔮', desc: 'Magia à distância. Meteoros devastadores.', color: '#9a86ff', dark: '#5a47c4', hp: 95, speed: 208, range: 620, cd: 0.55, skillCd: 7, skillCd2: 6, labels: ['Cajado', 'Habilidades', 'Manto Arcano', 'Vitalidade'],
+    sk: [{ name: 'Meteoro', k: 'target', r: 95, max: 500, icon: '☄️' }, { name: 'Raio Arcano', k: 'line', len: 640, w: 34, icon: '⚡' }] },
+  arqueiro:  { name: 'Arqueiro', emoji: '🏹', desc: 'Rápido e ágil. Rajada de flechas.', color: '#4fd18b', dark: '#2a925b', hp: 105, speed: 228, range: 700, cd: 0.32, skillCd: 5, skillCd2: 7, labels: ['Arco', 'Habilidades', 'Couraça', 'Vitalidade'],
+    sk: [{ name: 'Rajada', k: 'fan', n: 5, spread: .18, len: 700, icon: '🏹' }, { name: 'Tiro Perfurante', k: 'line', len: 900, w: 14, icon: '🎯' }] }
+};
+const CLS_KEYS = Object.keys(CLASSES);
+const UPK = ['weapon', 'skill', 'armor', 'vital'];
+const TIER_NAMES = ['Filhote', 'Aprendiz', 'Aventureiro', 'Veterano', 'Elite', 'Campeão', 'Lenda', 'Mítico', 'Divino', 'Celestial'];
+const MOB_NAMES = ['Gosma', 'Cogumelo', 'Lobo', 'Golem', 'Demônio'];
+const MOBS = { hp: [30, 75, 170, 400, 950], dmg: [6, 10, 16, 26, 40], sp: [80, 90, 100, 110, 120], r: [14, 18, 24, 30, 38], xp: [10, 20, 40, 80, 160], gold: [4, 8, 16, 32, 64] };
+const BOT_NAMES = ['Pipoca', 'Zeca', 'Luna', 'Bolt', 'Mel', 'Nico', 'Gatuno', 'Tita', 'Fênix', 'Bruxo', 'Sombra', 'Dudu', 'Kiko', 'Lobinho', 'Nuvem', 'Pingo', 'Raio', 'Thor', 'Mimi', 'Zumbi', 'Fagulha', 'Neo', 'Jujuba', 'Capitão', 'Trovão', 'Biscoito', 'Cometa', 'Ninja', 'Duda', 'Rex'];
+const MOB_COUNT = 100, ORB_COUNT = 320;
+
+const xpNeed = l => Math.floor(30 + 20 * Math.pow(l, 1.6));
+const upCost = n => Math.floor(15 * Math.pow(1.3, n) + 10 * n);
+const tierName = t => t < TIER_NAMES.length ? TIER_NAMES[t] : 'Celestial ' + (t - TIER_NAMES.length + 2);
+const dmgMul = p => (1 + 0.22 * p.up.weapon) * (1 + 0.07 * p.lvl);
+const skMul = p => (1 + 0.25 * p.up.skill) * (1 + 0.07 * p.lvl);
+const zoneTier = (x, y) => { const d = Math.hypot(x - CX, y - CY) / CX; return d < .22 ? 4 : d < .42 ? 3 : d < .62 ? 2 : d < .8 ? 1 : 0; };
+
+function recalc(p, init) {
+  const c = CLASSES[p.cls], old = p.maxhp;
+  p.maxhp = Math.round(c.hp + 22 * p.up.vital + 14 * (p.lvl - 1));
+  p.tier = Math.floor((p.lvl - 1) / 5);
+  p.r = 18 + Math.min(p.tier * 2.2, 26);
+  p.speed = c.speed * (1 + Math.min(.3, .004 * p.lvl));
+  p.armor = 6 * p.up.armor + 2.5 * p.lvl;
+  if (!init && p.maxhp > old) p.hp += p.maxhp - old;
+}
+
+class World {
+  constructor(o) {
+    o = o || {};
+    this.time = 0; this.nid = 1;
+    this.players = new Map(); this.mobs = []; this.orbs = []; this.proj = []; this.meteors = []; this.beams = []; this.board = new Map();
+    this.events = []; this.dead = new Map(); this.tg = [];
+    this.pvp = !!o.pvp;
+    this.bx0 = 0; this.by0 = 0; this.bx1 = W; this.by1 = H;
+    if (this.pvp) { this.bx0 = CX - 800; this.by0 = CY - 800; this.bx1 = CX + 800; this.by1 = CY + 800; }
+    this.mobMax = this.pvp ? 0 : MOB_COUNT; this.orbMax = this.pvp ? 0 : ORB_COUNT;
+    this.botTarget = o.bots == null ? (this.pvp ? 0 : 12) : o.bots; this.nextBot = 0;
+    this.lb = []; this.lbT = -9;
+    for (let i = 0; i < this.mobMax; i++) this.spawnMob();
+    for (let i = 0; i < this.orbMax; i++) this.spawnOrb();
+    for (let i = 0; i < this.botTarget; i++) this.spawnBot(true);
+  }
+  ev(e) { if (this.events.length < 500) this.events.push(e); }
+  flushEvents() { this.events.length = 0; }
+
+  /* ---------- criação ---------- */
+  addPlayer(name, cls, bot, key) {
+    if (!CLASSES[cls]) cls = 'guerreiro';
+    let bx = 0, by = 0, bd = -1;
+    for (let k = 0; k < 10; k++) {
+      const a = R() * TAU, rad = rnd(.85, 1.15) * CX;
+      let x = clamp(CX + Math.cos(a) * rad, 150, W - 150), y = clamp(CY + Math.sin(a) * rad, 150, H - 150);
+      if (this.pvp) { x = rnd(this.bx0 + 120, this.bx1 - 120); y = rnd(this.by0 + 120, this.by1 - 120); }
+      let md = 1e9; for (const q of this.players.values()) md = Math.min(md, Math.hypot(q.x - x, q.y - y));
+      if (md > bd) { bd = md; bx = x; by = y; }
+    }
+    const p = {
+      id: this.nid++, name: String(name || 'Bichinho').slice(0, 14), cls, bot: !!bot, isPlayer: true,
+      x: bx, y: by, prot: this.time + (this.pvp ? 3 : 8),
+      vx: 0, vy: 0, a: 0, lvl: 1, xp: 0, gold: 0, score: 0, kills: 0,
+      up: { weapon: 0, skill: 0, armor: 0, vital: 0 }, hp: 1, maxhp: 1, r: 18, tier: 0, speed: 200, armor: 0,
+      cd: 0, scd: 0, scd2: 0, dcd: 0, dashT: 0, dx: 0, dy: 0, swing: 0, lastHit: -99,
+      inp: { mx: 0, my: 0, a: 0, atk: false, skill: false, skill2: false, dash: false, sd: 260 }
+    };
+    p.key = key || ('p' + p.id);
+    if (this.pvp) { const bd0 = this.board.get(p.key) || { k: 0, d: 0 }; bd0.n = p.name; this.board.set(p.key, bd0); p.kills = bd0.k; }
+    if (this.pvp) { p.lvl = 10; for (const k of UPK) p.up[k] = 3; }
+    recalc(p, true); p.hp = p.maxhp;
+    if (bot) p.ai = { t: 0, st: 0, strafe: 1, brave: rnd(.6, 1.4), err: rnd(.04, .16), wx: p.x, wy: p.y, wt: 0 };
+    this.players.set(p.id, p);
+    return p;
+  }
+  spawnBot(init) {
+    const cls = CLS_KEYS[(R() * 3) | 0];
+    const hs = [...this.players.values()].filter(p => !p.bot);
+    let L;
+    if (init || !hs.length) L = 1 + ((R() * (init ? 6 : 4)) | 0);
+    else L = Math.max(1, Math.round(hs.reduce((a, p) => a + p.lvl, 0) / hs.length * rnd(.5, 1.1)));
+    const p = this.addPlayer(BOT_NAMES[(R() * BOT_NAMES.length) | 0], cls, true);
+    if (this.pvp) return;
+    p.lvl = L; p.gold = L * 22; p.score = 0;
+    for (let i = 1; i < L; i++) p.score += xpNeed(i);
+    recalc(p, true); p.hp = p.maxhp;
+  }
+  spawnMob() {
+    const wt = [38, 30, 20, 12, 8]; let r = R() * 100, t = 0;
+    while (t < 4 && r >= wt[t]) { r -= wt[t]; t++; }
+    const lo = [.8, .62, .42, .22, 0][t], hi = [1.3, .8, .62, .42, .22][t];
+    const rad = rnd(lo, hi) * CX, a = R() * TAU;
+    const x = clamp(CX + Math.cos(a) * rad, 60, W - 60), y = clamp(CY + Math.sin(a) * rad, 60, H - 60);
+    this.mobs.push({ id: this.nid++, x, y, hx: x, hy: y, vx: 0, vy: 0, tier: t, hp: MOBS.hp[t], maxhp: MOBS.hp[t], r: MOBS.r[t], cd: 0, wa: R() * TAU, wt: 0, mv: false });
+  }
+  spawnOrb() {
+    const x = rnd(60, W - 60), y = rnd(60, H - 60), t = zoneTier(x, y), m = [1, 2, 4, 8, 16][t], k = R() < .6 ? 0 : 1;
+    this.orbs.push({ id: this.nid++, x, y, k, t, v: k ? 2 * m : 4 * m });
+  }
+
+  /* ---------- API pública ---------- */
+  setInput(id, inp) {
+    const p = this.players.get(id); if (!p || !inp) return; const i = p.inp;
+    const f = (v, d) => Number.isFinite(+v) ? +v : d;
+    i.mx = clamp(f(inp.mx, 0), -1, 1); i.my = clamp(f(inp.my, 0), -1, 1); i.a = f(inp.a, i.a);
+    i.atk = !!inp.atk; if (inp.dash) i.dash = true;
+    i.sd = clamp(f(inp.sd, 260), 60, 500);
+    // a mira da habilidade viaja junto com o pedido: se nenhum passo de física rodar neste quadro,
+    // o quadro seguinte não pode sobrescrever direção e distância com valores comuns
+    if (inp.skill) { i.skill = true; i.ska = i.a; i.sksd = i.sd; }
+    if (inp.skill2) { i.skill2 = true; i.sk2a = i.a; }
+  }
+  leaveKey(key) {
+    for (const p of Array.from(this.players.values())) if (p.key === key) this.players.delete(p.id);
+    this.board.delete(key);
+  }
+  upgrade(id, k) {
+    const p = this.players.get(id); if (this.pvp || !p || !(k in p.up)) return false;
+    const c = upCost(p.up[k]); if (p.gold < c) return false;
+    p.gold -= c; p.up[k]++; recalc(p); return true;
+  }
+
+  /* ---------- combate ---------- */
+  hurt(t, dmg, src, kx, ky) {
+    if (t.dead) return;
+    if (t.isPlayer) { if (t.dashT > 0 || this.time < t.prot) return; dmg *= 100 / (100 + t.armor); t.lastHit = this.time; }
+    else if (src && src.isPlayer) t.tgt = src.id;
+    t.hp -= dmg;
+    if (kx !== undefined) { t.vx += kx; t.vy += ky; }
+    this.ev({ e: 'dmg', x: r1(t.x), y: r1(t.y - t.r), v: Math.max(1, r1(dmg)), i: t.id });
+    if (t.hp <= 0) this.kill(t, src);
+  }
+  reward(p, xp, gold) {
+    p.gold += gold; p.score += xp; p.xp += xp;
+    while (p.xp >= xpNeed(p.lvl)) {
+      p.xp -= xpNeed(p.lvl); p.lvl++; recalc(p);
+      p.hp = Math.min(p.maxhp, p.hp + p.maxhp * .3);
+      this.ev({ e: 'lvl', x: r1(p.x), y: r1(p.y), i: p.id, l: p.lvl });
+    }
+  }
+  kill(t, src) {
+    t.dead = true;
+    if (t.isPlayer) {
+      this.players.delete(t.id);
+      this.ev({ e: 'death', x: r1(t.x), y: r1(t.y), c: CLASSES[t.cls].color });
+      this.ev({ e: 'kill', a: src ? src.name : 'Um monstro', b: t.name });
+      if (src && src.isPlayer && src !== t) {
+        src.kills++;
+        if (this.pvp) { const sb = this.board.get(src.key); if (sb) sb.k = src.kills; src.score = src.kills; src.hp = Math.min(src.maxhp, src.hp + src.maxhp * .25); }
+        else this.reward(src, 40 + t.lvl * 14, Math.floor(t.gold * .6) + 10 + t.lvl * 3);
+      }
+      if (this.pvp) {
+        const tb = this.board.get(t.key); if (tb) tb.d++;
+        if (!t.bot) this.dead.set(t.id, { lvl: t.lvl, kills: t.kills, deaths: tb ? tb.d : 0, score: t.kills, by: src ? src.name : 'um monstro', tier: t.tier, pvp: 1 });
+        else this.board.delete(t.key);
+        return;
+      }
+      const g = Math.floor(t.gold * .4), z = zoneTier(t.x, t.y);
+      for (let i = 0; i < 6; i++) this.orbs.push({ id: this.nid++, x: clamp(t.x + rnd(-50, 50), 30, W - 30), y: clamp(t.y + rnd(-50, 50), 30, H - 30), k: i % 2, t: z, v: Math.max(1, Math.ceil((i % 2 ? g : t.lvl * 6) / 3)) });
+      if (!t.bot) this.dead.set(t.id, { lvl: t.lvl, kills: t.kills, score: r1(t.score), by: src ? src.name : 'um monstro', tier: t.tier });
+    } else {
+      this.ev({ e: 'death', x: r1(t.x), y: r1(t.y), c: ['#7be08f', '#ff7a7a', '#b8c0c8', '#9aa3ad', '#ff5a3a'][t.tier] });
+      if (src && src.isPlayer) this.reward(src, MOBS.xp[t.tier], MOBS.gold[t.tier]);
+    }
+  }
+  shoot(p, a, spd, dmg, r, kind, life) {
+    this.proj.push({ id: this.nid++, x: p.x + Math.cos(a) * p.r, y: p.y + Math.sin(a) * p.r, vx: Math.cos(a) * spd, vy: Math.sin(a) * spd, dmg, r, kind, own: p.id, life });
+  }
+  attack(p) {
+    const c = CLASSES[p.cls], dm = dmgMul(p), co = Math.cos(p.a), si = Math.sin(p.a);
+    p.cd = c.cd;
+    if (p.cls === 'guerreiro') {
+      p.swing = .2; const rng = c.range + p.r;
+      this.ev({ e: 'slash', x: r1(p.x), y: r1(p.y), a: Math.round(p.a * 100) / 100, r: r1(rng) });
+      for (const t of this.tg) {
+        if (t === p || t.dead) continue;
+        const dx = t.x - p.x, dy = t.y - p.y, d = Math.hypot(dx, dy);
+        if (d < rng + t.r && Math.abs(angDiff(Math.atan2(dy, dx), p.a)) < 1.0) this.hurt(t, 14 * dm, p, co * 140, si * 140);
+      }
+      p.vx += co * 120; p.vy += si * 120;
+    } else if (p.cls === 'mago') this.shoot(p, p.a, 560, 11 * dm, 10, 'orb', c.range / 560);
+    else this.shoot(p, p.a, 820, 8 * dm, 5, 'arrow', c.range / 820);
+  }
+  skill(p) {
+    const c = CLASSES[p.cls], sm = skMul(p); p.scd = c.skillCd;
+    const sa = p.inp.ska != null ? p.inp.ska : p.a, ssd = p.inp.ska != null ? p.inp.sksd : p.inp.sd;
+    if (p.cls === 'guerreiro') {
+      p.swing = .35; const rr = 112;
+      this.ev({ e: 'spin', x: r1(p.x), y: r1(p.y), r: rr + p.r });
+      for (const t of this.tg) {
+        if (t === p || t.dead) continue;
+        const dx = t.x - p.x, dy = t.y - p.y, d = Math.hypot(dx, dy) || 1;
+        if (d < rr + t.r + p.r) this.hurt(t, 24 * sm, p, dx / d * 320, dy / d * 320);
+      }
+    } else if (p.cls === 'mago') {
+      this.meteors.push({ x: p.x + Math.cos(sa) * ssd, y: p.y + Math.sin(sa) * ssd, t: .75, dmg: 34 * sm, r: 95, own: p.id });
+    } else {
+      for (let i = -2; i <= 2; i++) this.shoot(p, sa + i * .18, 820, 9 * sm, 5, 'arrow', .85);
+    }
+  }
+  skill2(p) {
+    const c = CLASSES[p.cls], sm = skMul(p); p.scd2 = c.skillCd2;
+    const sa = p.inp.sk2a != null ? p.inp.sk2a : p.a, co = Math.cos(sa), si = Math.sin(sa);
+    if (p.cls === 'guerreiro') {
+      p.swing = .35; const rng = 230 + p.r;
+      this.ev({ e: 'quake', x: r1(p.x), y: r1(p.y), a: Math.round(sa * 100) / 100, r: r1(rng) });
+      for (const t of this.tg) {
+        if (t === p || t.dead) continue;
+        const dx = t.x - p.x, dy = t.y - p.y, d = Math.hypot(dx, dy) || 1;
+        if (d < rng + t.r && Math.abs(angDiff(Math.atan2(dy, dx), sa)) < .7) this.hurt(t, 30 * sm, p, dx / d * 460, dy / d * 460);
+      }
+      p.vx += co * 200; p.vy += si * 200;
+    } else if (p.cls === 'mago') {
+      this.beams.push({ x: p.x, y: p.y, a: sa, len: 640, w: 34, t: .3, dmg: 28 * sm, own: p.id });
+    } else {
+      this.proj.push({ id: this.nid++, x: p.x + co * p.r, y: p.y + si * p.r, vx: co * 1200, vy: si * 1200, dmg: 30 * sm, r: 8, kind: 'pierce', own: p.id, life: .78, pierce: true, hit: new Set() });
+    }
+  }
+  act(p, dt) {
+    const inp = p.inp; p.cd -= dt; p.scd -= dt; p.scd2 -= dt; p.dcd -= dt; if (p.swing > 0) p.swing -= dt;
+    let mx = inp.mx, my = inp.my; const m = Math.hypot(mx, my); if (m > 1) { mx /= m; my /= m; }
+    p.a = inp.a;
+    if (inp.dash) {
+      inp.dash = false;
+      if (p.dcd <= 0) {
+        let dx = mx, dy = my; if (Math.hypot(dx, dy) < .1) { dx = Math.cos(p.a); dy = Math.sin(p.a); }
+        const l = Math.hypot(dx, dy); p.dx = dx / l; p.dy = dy / l; p.dashT = .17; p.dcd = 2.4;
+        this.ev({ e: 'dash', x: r1(p.x), y: r1(p.y), a: Math.round(Math.atan2(p.dy, p.dx) * 100) / 100, i: p.id });
+      }
+    }
+    if (p.dashT > 0) { p.dashT -= dt; p.x += p.dx * 880 * dt; p.y += p.dy * 880 * dt; p.vx = p.dx * 300; p.vy = p.dy * 300; }
+    else { const k = Math.min(1, dt * 14); p.vx += (mx * p.speed - p.vx) * k; p.vy += (my * p.speed - p.vy) * k; p.x += p.vx * dt; p.y += p.vy * dt; }
+    p.x = clamp(p.x, this.bx0 + p.r, this.bx1 - p.r); p.y = clamp(p.y, this.by0 + p.r, this.by1 - p.r);
+    if (inp.skill) { inp.skill = false; if (p.scd <= 0 && p.dashT <= 0) this.skill(p); }
+    if (inp.skill2) { inp.skill2 = false; if (p.scd2 <= 0 && p.dashT <= 0) this.skill2(p); }
+    inp.ska = null; inp.sk2a = null;
+    if (inp.atk && p.cd <= 0 && p.dashT <= 0) this.attack(p);
+  }
+
+  /* ---------- mobs ---------- */
+  mobAI(m, dt) {
+    m.cd -= dt;
+    let tgt = null, bd = Math.pow(230 + m.tier * 25, 2);
+    for (const p of this.players.values()) { if (this.time < p.prot) continue; const dx = p.x - m.x, dy = p.y - m.y, d = dx * dx + dy * dy; if (d < bd) { bd = d; tgt = p; } }
+    const hd = Math.hypot(m.x - m.hx, m.y - m.hy);
+    let dx = 0, dy = 0, sp = MOBS.sp[m.tier];
+    if (tgt && hd < 750) {
+      const ax = tgt.x - m.x, ay = tgt.y - m.y, d = Math.hypot(ax, ay) || 1; dx = ax / d; dy = ay / d; sp *= 1.25;
+      if (d < m.r + tgt.r + 8 && m.cd <= 0) { m.cd = 1; this.hurt(tgt, MOBS.dmg[m.tier], m, dx * 160, dy * 160); }
+    } else {
+      m.wt -= dt;
+      if (m.wt <= 0) { m.wt = rnd(1.5, 4); m.mv = R() < .7; m.wa = hd > 200 ? Math.atan2(m.hy - m.y, m.hx - m.x) + rnd(-.6, .6) : R() * TAU; }
+      if (hd > 750) m.wa = Math.atan2(m.hy - m.y, m.hx - m.x);
+      if (m.mv || hd > 750) { dx = Math.cos(m.wa) * .4; dy = Math.sin(m.wa) * .4; }
+    }
+    const k = Math.min(1, dt * 6);
+    m.vx += (dx * sp - m.vx) * k; m.vy += (dy * sp - m.vy) * k;
+    m.x = clamp(m.x + m.vx * dt, m.r, W - m.r); m.y = clamp(m.y + m.vy * dt, m.r, H - m.r);
+  }
+
+  /* ---------- bots (agem como jogadores) ---------- */
+  botBuy(p) {
+    if (R() > .3) return;
+    const ks = UPK.slice().sort((a, b) => p.up[a] - p.up[b]);
+    for (const k of ks) { if (p.gold >= upCost(p.up[k])) { this.upgrade(p.id, k); break; } }
+  }
+  think(p, dt) {
+    const ai = p.ai, inp = p.inp, c = CLASSES[p.cls];
+    ai.t -= dt; ai.st -= dt;
+    if (ai.st <= 0) { ai.st = rnd(.7, 2); ai.strafe = R() < .5 ? -1 : 1; }
+    if (ai.t > 0) return;
+    ai.t = rnd(.07, .15);
+    this.botBuy(p);
+    const ranged = p.cls !== 'guerreiro', hpf = p.hp / p.maxhp;
+    let en = null, ed = 1e9;
+    for (const q of this.players.values()) { if (q === p || this.time < q.prot) continue; const d = Math.hypot(q.x - p.x, q.y - p.y); if (d < ed) { ed = d; en = q; } }
+    const maxT = Math.min(4, Math.floor((p.lvl - 1) / 4));
+    let mob = null, md = 1e9;
+    for (const m of this.mobs) {
+      if (m.dead) continue; const d = Math.hypot(m.x - p.x, m.y - p.y);
+      if (d > 650 || (m.tier > maxT && d > 200)) continue;
+      if (d < md) { md = d; mob = m; }
+    }
+    let orb = null, od = 520;
+    for (const o of this.orbs) { const d = Math.hypot(o.x - p.x, o.y - p.y); if (d < od) { od = d; orb = o; } }
+    const strong = en && en.lvl > p.lvl * ai.brave + 3;
+    let T = null, mode = 'wander';
+    if (hpf < .35 && ((en && ed < 520) || (mob && md < 220))) { mode = 'flee'; T = (en && ed < 520 && (!mob || ed < md)) ? en : mob; }
+    else if (en && ed < 520 && !strong && (en.lvl >= p.lvl * .6 || this.time - p.lastHit < 3)) { mode = 'fight'; T = en; }
+    else if (strong && ed < 380) { mode = 'flee'; T = en; }
+    else if (mob) { mode = 'fight'; T = mob; }
+    else if (orb) { mode = 'orb'; T = orb; }
+    inp.atk = false; inp.mx = 0; inp.my = 0;
+    if (mode === 'wander') {
+      if (ai.wt <= 0 || Math.hypot(ai.wx - p.x, ai.wy - p.y) < 90) {
+        const rad = clamp(1.15 - p.lvl * .05, .1, 1.1) * CX * rnd(.8, 1.1), a = R() * TAU;
+        ai.wx = clamp(CX + Math.cos(a) * rad, 100, W - 100); ai.wy = clamp(CY + Math.sin(a) * rad, 100, H - 100); ai.wt = rnd(6, 12);
+        if (this.pvp) { ai.wx = rnd(this.bx0 + 150, this.bx1 - 150); ai.wy = rnd(this.by0 + 150, this.by1 - 150); ai.wt = rnd(2, 5); }
+      }
+      ai.wt -= .12;
+      const dx = ai.wx - p.x, dy = ai.wy - p.y, d = Math.hypot(dx, dy) || 1;
+      inp.mx = dx / d * .8; inp.my = dy / d * .8; inp.a = Math.atan2(dy, dx);
+    } else if (mode === 'orb') {
+      const dx = T.x - p.x, dy = T.y - p.y, d = Math.hypot(dx, dy) || 1;
+      inp.mx = dx / d; inp.my = dy / d; inp.a = Math.atan2(dy, dx);
+    } else if (mode === 'flee') {
+      let dx = p.x - T.x, dy = p.y - T.y; const d = Math.hypot(dx, dy) || 1; dx /= d; dy /= d;
+      if (p.x < this.bx0 + 250 || p.x > this.bx1 - 250 || p.y < this.by0 + 250 || p.y > this.by1 - 250) { const cx = CX - p.x, cy = CY - p.y, cl = Math.hypot(cx, cy) || 1; dx += cx / cl * .8; dy += cy / cl * .8; }
+      inp.mx = dx; inp.my = dy; inp.a = Math.atan2(-dy, -dx);
+      if (p.dcd <= 0 && d < 240) inp.dash = true;
+      if (ranged && p.scd <= 0 && d < 400 && T.isPlayer) { inp.skill = true; inp.a = Math.atan2(T.y - p.y, T.x - p.x); inp.sd = clamp(d, 80, 500); }
+    } else {
+      const dx = T.x - p.x, dy = T.y - p.y, d = Math.hypot(dx, dy) || 1, ux = dx / d, uy = dy / d;
+      const ideal = ranged ? (p.cls === 'mago' ? 300 : 340) : T.r + p.r + 18;
+      let mx = 0, my = 0;
+      if (d > ideal + 40) { mx = ux; my = uy; if (ranged) { mx += -uy * ai.strafe * .35; my += ux * ai.strafe * .35; } }
+      else if (ranged && d < ideal - 90) { mx = -ux; my = -uy; }
+      else { mx = -uy * ai.strafe * .8; my = ux * ai.strafe * .8; if (!ranged) { mx += ux * .3; my += uy * .3; } }
+      inp.mx = mx; inp.my = my;
+      const lead = ranged ? d / (p.cls === 'mago' ? 560 : 820) : 0;
+      inp.a = Math.atan2(T.y + (T.vy || 0) * lead - p.y, T.x + (T.vx || 0) * lead - p.x) + rnd(-ai.err, ai.err);
+      inp.atk = ranged ? d < c.range * .8 : d < c.range + T.r + 10;
+      if (p.scd <= 0 && R() < .6) {
+        if (p.cls === 'guerreiro' && d < 115 + T.r) inp.skill = true;
+        else if (p.cls === 'mago' && d < 460 && d > 90) {
+          const lx = T.x + (T.vx || 0) * .75 - p.x, ly = T.y + (T.vy || 0) * .75 - p.y;
+          inp.skill = true; inp.a = Math.atan2(ly, lx); inp.sd = clamp(Math.hypot(lx, ly), 80, 500);
+        } else if (p.cls === 'arqueiro' && d < 500) inp.skill = true;
+      }
+      if (p.scd2 <= 0 && !inp.skill && R() < .5) {
+        if (p.cls === 'guerreiro' && d < 215 + T.r) inp.skill2 = true;
+        else if (p.cls === 'mago' && d < 560 && d > 60) inp.skill2 = true;
+        else if (p.cls === 'arqueiro' && d < 820 && d > 60) inp.skill2 = true;
+      }
+      if (p.dcd <= 0 && T.isPlayer) {
+        if (!ranged && d > 200 && d < 450) inp.dash = true;
+        else if (ranged && d < 130) { inp.mx = -ux; inp.my = -uy; inp.dash = true; }
+        else if (d < 220 && R() < .12) inp.dash = true;
+      }
+    }
+  }
+
+  /* ---------- passo da simulação ---------- */
+  step(dt) {
+    this.time += dt;
+    const pl = Array.from(this.players.values());
+    this.tg = pl.concat(this.mobs);
+    for (const p of pl) { if (p.dead) continue; if (p.ai) this.think(p, dt); this.act(p, dt); }
+    for (const m of this.mobs) if (!m.dead) this.mobAI(m, dt);
+    // separação suave
+    const tg = this.tg;
+    for (let i = 0; i < tg.length; i++) {
+      const a = tg[i]; if (a.dead) continue;
+      for (let j = i + 1; j < tg.length; j++) {
+        const b = tg[j]; if (b.dead) continue;
+        const dx = b.x - a.x, dy = b.y - a.y; if (dx > 90 || dx < -90 || dy > 90 || dy < -90) continue;
+        const d = Math.hypot(dx, dy), ov = a.r + b.r - d;
+        if (ov > 0 && d > .01) { const nx = dx / d, ny = dy / d; a.x -= nx * ov * .5; a.y -= ny * ov * .5; b.x += nx * ov * .5; b.y += ny * ov * .5; }
+      }
+    }
+    // projéteis
+    for (const q of this.proj) {
+      q.x += q.vx * dt; q.y += q.vy * dt; q.life -= dt;
+      if (q.life <= 0 || q.x < this.bx0 || q.y < this.by0 || q.x > this.bx1 || q.y > this.by1) { q.dead = true; continue; }
+      const src = this.players.get(q.own);
+      for (const t of tg) {
+        if (t.dead || t.id === q.own) continue;
+        if (q.hit && q.hit.has(t.id)) continue;
+        const dx = t.x - q.x, dy = t.y - q.y, rr = t.r + q.r;
+        if (dx * dx + dy * dy < rr * rr) {
+          const sp = Math.hypot(q.vx, q.vy) || 1;
+          this.hurt(t, q.dmg, src, q.vx / sp * 90, q.vy / sp * 90);
+          if (q.pierce) q.hit.add(t.id); else { q.dead = true; break; }
+        }
+      }
+    }
+    this.proj = this.proj.filter(q => !q.dead);
+    // meteoros
+    for (const m of this.meteors) {
+      m.t -= dt;
+      if (m.t <= 0) {
+        m.dead = true; const src = this.players.get(m.own);
+        this.ev({ e: 'boom', x: r1(m.x), y: r1(m.y), r: m.r });
+        for (const t of tg) {
+          if (t.dead || t.id === m.own) continue;
+          const dx = t.x - m.x, dy = t.y - m.y, d = Math.hypot(dx, dy) || 1;
+          if (d < m.r + t.r) this.hurt(t, m.dmg, src, dx / d * 300, dy / d * 300);
+        }
+      }
+    }
+    this.meteors = this.meteors.filter(m => !m.dead);
+    for (const b of this.beams) {
+      const src = this.players.get(b.own); if (!src) { b.dead = true; continue; }
+      b.x = src.x; b.y = src.y; b.t -= dt;
+      if (b.t <= 0) {
+        b.dead = true; const co = Math.cos(b.a), si = Math.sin(b.a);
+        this.ev({ e: 'beam', x: r1(b.x), y: r1(b.y), a: Math.round(b.a * 100) / 100, len: b.len, w: b.w });
+        for (const t of tg) {
+          if (t.dead || t.id === b.own) continue;
+          const dx = t.x - b.x, dy = t.y - b.y, along = dx * co + dy * si;
+          if (along < -t.r || along > b.len + t.r) continue;
+          if (Math.abs(-dx * si + dy * co) < b.w / 2 + t.r) this.hurt(t, b.dmg, src, co * 260, si * 260);
+        }
+      }
+    }
+    this.beams = this.beams.filter(b => !b.dead);
+    // orbes
+    for (const o of this.orbs) {
+      for (const p of this.players.values()) {
+        const dx = p.x - o.x, dy = p.y - o.y, d2 = dx * dx + dy * dy, rr = p.r + 16;
+        if (d2 < rr * rr) { if (o.k) this.reward(p, 1, o.v); else this.reward(p, o.v, 0); o.dead = true; break; }
+        else if (d2 < 12100) { const d = Math.sqrt(d2); o.x += dx / d * 260 * dt; o.y += dy / d * 260 * dt; }
+      }
+    }
+    this.orbs = this.orbs.filter(o => !o.dead);
+    // regeneração
+    for (const p of this.players.values()) {
+      p.hp = Math.min(p.maxhp, p.hp + p.maxhp * ((this.time - p.lastHit > 5 ? .025 : .005)) * dt);
+    }
+    // reposição
+    this.mobs = this.mobs.filter(m => !m.dead);
+    while (this.mobs.length < this.mobMax) this.spawnMob();
+    while (this.orbs.length < this.orbMax) this.spawnOrb();
+    let nb = 0; for (const p of this.players.values()) if (p.bot) nb++;
+    if (nb < this.botTarget && this.time >= this.nextBot) { this.spawnBot(false); this.nextBot = this.time + 2; }
+  }
+
+  /* ---------- snapshot para o cliente ---------- */
+  snapshot(id) {
+    const me = this.players.get(id);
+    if (!me) return { dead: true, info: this.dead.get(id) || null };
+    if (this.time - this.lbT > .5) {
+      this.lbT = this.time;
+      if (this.pvp) {
+        const byKey = new Map(); for (const p of this.players.values()) byKey.set(p.key, p.id);
+        this.lb = Array.from(this.board.entries()).map(([k, b]) => ({ id: byKey.get(k) || 0, n: b.n, l: b.k, s: b.k, d: b.d })).sort((a, b) => b.l - a.l || a.d - b.d).slice(0, 5);
+      } else this.lb = Array.from(this.players.values()).sort((a, b) => b.score - a.score).slice(0, 5).map(p => ({ id: p.id, n: p.name, l: p.lvl, s: r1(p.score) }));
+    }
+    const X = me.x, Y = me.y, B = 900, near = o => Math.abs(o.x - X) < B && Math.abs(o.y - Y) < B;
+    const c = CLASSES[me.cls];
+    const s = {
+      me: {
+        id: me.id, cls: me.cls, x: r1(me.x), y: r1(me.y), hp: r1(me.hp), mh: me.maxhp, pr: Math.max(0, Math.round((me.prot - this.time) * 10) / 10), lvl: me.lvl, xp: r1(me.xp), xn: xpNeed(me.lvl),
+        gold: r1(me.gold), kills: me.kills, score: r1(me.score), tier: me.tier, tn: tierName(me.tier),
+        up: UPK.map(k => me.up[k]), co: UPK.map(k => upCost(me.up[k])),
+        cs: [Math.max(0, me.scd), Math.max(0, me.dcd), Math.max(0, me.scd2)], cm: [c.skillCd, 2.4, c.skillCd2], rng: c.range
+      },
+      pvp: this.pvp ? 1 : 0, ar: [this.bx0, this.by0, this.bx1, this.by1], pl: [], mb: [], or: [], pr: [], mt: [], bm: [], pm: [], lb: this.lb, ev: []
+    };
+    for (const p of this.players.values()) {
+      s.pm.push([p.id, r1(p.x), r1(p.y)]);
+      if (near(p)) s.pl.push({ id: p.id, n: p.name, c: p.cls, x: r1(p.x), y: r1(p.y), vx: r1(p.vx), vy: r1(p.vy), a: Math.round(p.a * 100) / 100, hp: r1(p.hp), mh: p.maxhp, l: p.lvl, t: p.tier, r: Math.round(p.r * 10) / 10, d: p.dashT > 0 ? 1 : 0, s: p.swing > 0 ? Math.round(p.swing * 100) / 100 : 0 });
+    }
+    for (const m of this.mobs) if (near(m)) s.mb.push({ id: m.id, x: r1(m.x), y: r1(m.y), vx: r1(m.vx), vy: r1(m.vy), t: m.tier, hp: r1(m.hp), mh: m.maxhp, r: m.r });
+    for (const o of this.orbs) if (near(o)) s.or.push([o.id, r1(o.x), r1(o.y), o.k, o.t]);
+    for (const q of this.proj) if (near(q)) s.pr.push([q.id, r1(q.x), r1(q.y), r1(q.vx), r1(q.vy), q.kind === 'orb' ? 0 : q.kind === 'pierce' ? 2 : 1, q.r]);
+    for (const m of this.meteors) if (near(m)) s.mt.push([r1(m.x), r1(m.y), Math.round(m.t * 100) / 100, m.r]);
+    for (const b of this.beams) if (near(b)) s.bm.push([r1(b.x), r1(b.y), Math.round(b.a * 100) / 100, b.len, b.w, Math.round(b.t * 100) / 100]);
+    for (const e of this.events) if (e.e === 'kill' || (Math.abs(e.x - X) < B && Math.abs(e.y - Y) < B)) s.ev.push(e);
+    return s;
+  }
+}
+
+const api = { World, CLASSES, CLS_KEYS, UPK, W, H, xpNeed, upCost, tierName, zoneTier, MOB_NAMES, MOBS };
+root.Sim = api;
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+'use strict';
+const S = window.Sim, CL = S.CLASSES, WW = S.W, HH = S.H;
+const $ = id => document.getElementById(id);
+const cv = $('c'), ctx = cv.getContext('2d');
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const TAU = Math.PI * 2;
+let w = 0, h = 0, dpr = 1, zoom = 1, bs = 1;
+const B = {};
+let state = 'menu', mode = 'off', world = null, link = null, peer = null, myId = 0, cls = 'guerreiro', pname = '';
+let snap = null, snapT = 0, frameNo = 0, timeS = 0, shake = 0, kk = 1;
+const disp = new Map(), parts = [], fxs = [], texts = [], feed = [];
+let usingTouch = ('ontouchstart' in window) || (window.matchMedia && matchMedia('(pointer:coarse)').matches);
+let faceA = 0;
+const guests = new Map(), evBuf = [];
+let roomCode = '', roomPw = '', hostNetAcc = 0, pwOn = false;
+const keys = {}, mouse = { x: 0, y: 0, down: false };
+const pend = { skill: null, skill2: null, dash: false };
+let keyAim = null, joining = false, hosting = false, joinedAt = 0, lastPw = '', lastRejoin = -99999, stuckT = 0, stuckPos = null, toastT = 0;
+const UID = Math.random().toString(36).slice(2, 10);
+let stick = null, atkT = null, skT = null;
+const I = { mx: 0, my: 0, a: 0, atk: false, skill: false, skill2: false, dash: false, sd: 260 };
+
+/* ---------- áudio ---------- */
+let AC = null; const sndT = {};
+function snd(f, d, type, v, s, key) {
+  const n = performance.now(); if (key) { if (n - (sndT[key] || 0) < 70) return; sndT[key] = n; }
+  try {
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain(), t = AC.currentTime;
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t);
+    if (s) o.frequency.exponentialRampToValueAtTime(Math.max(30, f * s), t + d);
+    g.gain.setValueAtTime(v || .05, t); g.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(g); g.connect(AC.destination); o.start(); o.stop(t + d);
+  } catch (e) {}
+}
+
+/* ---------- layout / resize ---------- */
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2); w = window.innerWidth; h = window.innerHeight;
+  cv.width = Math.floor(w * dpr); cv.height = Math.floor(h * dpr);
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  zoom = clamp(Math.min(w, h) / 640, .55, 1.15);
+  bs = clamp(Math.min(w, h) / 420, .8, 1.3);
+  B.atk = { x: w - 100 * bs, y: h - 100 * bs, r: 56 * bs };
+  const R0 = 104 * bs, pol = deg => [Math.cos(deg * Math.PI / 180) * R0, Math.sin(deg * Math.PI / 180) * R0];
+  const pd = pol(178), p1 = pol(228), p2 = pol(278);
+  B.dash = { x: B.atk.x + pd[0], y: B.atk.y + pd[1], r: 34 * bs };
+  B.skill = { x: B.atk.x + p1[0], y: B.atk.y + p1[1], r: 38 * bs };
+  B.skill2 = { x: B.atk.x + p2[0], y: B.atk.y + p2[1], r: 38 * bs };
+}
+window.addEventListener('resize', resize); resize();
+
+/* ---------- paleta / util ---------- */
+const ZONE = [['#7bc96f', '#72c067'], ['#a9d06a', '#a0c762'], ['#d9c46c', '#cfb961'], ['#c995a6', '#bf8b9c'], ['#9272b9', '#8868ae']];
+const ORBC = [['#6fe3ff', '#ffd34d'], ['#6fe3ff', '#ffd34d'], ['#7dffb0', '#ffb347'], ['#ff9ae0', '#ff8a5c'], ['#c9a6ff', '#ff5a5a']];
+const hsh = (a, b) => { let n = (a * 374761393 + b * 668265263) | 0; n = (n ^ (n >>> 13)) * 1274126177 | 0; return ((n ^ (n >>> 16)) >>> 0) / 4294967296; };
+function rr(x, y, ww, hh, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + ww, y, x + ww, y + hh, r); ctx.arcTo(x + ww, y + hh, x, y + hh, r); ctx.arcTo(x, y + hh, x, y, r); ctx.arcTo(x, y, x + ww, y, r); ctx.closePath(); }
+function txt(s, x, y, size, col, align, bold) {
+  ctx.font = (bold === false ? '500 ' : '800 ') + size + 'px system-ui,sans-serif'; ctx.textAlign = align || 'center'; ctx.textBaseline = 'middle';
+  ctx.lineWidth = Math.max(2, size / 5); ctx.strokeStyle = 'rgba(20,20,30,.75)'; ctx.lineJoin = 'round'; ctx.strokeText(s, x, y);
+  ctx.fillStyle = col || '#fff'; ctx.fillText(s, x, y);
+}
+function hexA(hex, a) { const n = parseInt(hex.slice(1), 16); return 'rgba(' + (n >> 16) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')'; }
+function burst(x, y, c, n, sp) {
+  for (let i = 0; i < n && parts.length < 600; i++) { const a = Math.random() * TAU, v = (.3 + Math.random() * .7) * sp; parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: .5 + Math.random() * .3, m: .8, s: 2 + Math.random() * 3, c }); }
+}
+
+/* ---------- menu ---------- */
+(function initMenu() {
+  try { $('name').value = localStorage.getItem('bn_name') || ''; cls = localStorage.getItem('bn_cls') || cls; } catch (e) {}
+  if (!CL[cls]) cls = 'guerreiro';
+  const box = $('classes');
+  S.CLS_KEYS.forEach(k => {
+    const c = CL[k], b = document.createElement('button'); b.className = 'cls' + (k === cls ? ' sel' : ''); b.dataset.k = k;
+    b.innerHTML = '<span class="em">' + c.emoji + '</span><b>' + c.name + '</b><small>' + c.desc + '</small>';
+    b.addEventListener('click', () => { cls = k; box.querySelectorAll('.cls').forEach(x => x.classList.toggle('sel', x.dataset.k === k)); });
+    box.appendChild(b);
+  });
+  const inv = (location.hash + location.search).match(/sala=([A-Za-z0-9]{4,6})/);
+  if (inv) { $('pjoin').classList.remove('hidden'); $('rcode').value = inv[1].toUpperCase(); setMsg('Convite recebido! Escolha seu bichinho e toque em Entrar na sala.'); }
+  $('hint').textContent = usingTouch ? 'Joystick à esquerda • segure ATACAR e arraste para mirar • segure uma habilidade, arraste para mirar e solte • 💨 dash' : 'WASD mover • mouse mira e ataca • segure Q ou E, mire com o mouse e solte • Espaço dash • 1-4 upgrades (offline)';
+})();
+function getName() { pname = ($('name').value || '').trim() || 'Bichinho' + ((Math.random() * 90 + 10) | 0); try { localStorage.setItem('bn_name', $('name').value.trim()); localStorage.setItem('bn_cls', cls); } catch (e) {} return pname; }
+$('play').addEventListener('click', () => { snd(440, .1, 'triangle', .04); startOffline(); });
+$('again').addEventListener('click', () => { $('dead').classList.add('hidden'); if (mode === 'off' || mode === 'host') respawnOffline(); else joinOnline(); });
+$('tomenu').addEventListener('click', () => { $('dead').classList.add('hidden'); toMenu(); });
+function toMenu() {
+  state = 'menu';
+  if (link) { const l = link; link = null; try { l.close(); } catch (e) {} }
+  if (peer) { try { peer.destroy(); } catch (e) {} peer = null; }
+  guests.clear(); evBuf.length = 0; roomCode = ''; roomPw = ''; world = null; snap = null; mode = 'off'; disp.clear();
+  joining = false; hosting = false; setJoinBtn(false); setHostBtn(false); keyAim = null; skT = null;
+  $('menu').classList.remove('hidden'); $('upbtn').classList.add('hidden'); $('ups').classList.add('hidden'); $('menubtn').classList.add('hidden'); $('room').classList.add('hidden');
+}
+function enterPlay() {
+  state = 'play'; $('menu').classList.add('hidden'); $('dead').classList.add('hidden'); $('upbtn').classList.remove('hidden'); $('menubtn').classList.remove('hidden'); $('room').classList.add('hidden');
+  buildUps(); parts.length = fxs.length = texts.length = feed.length = 0; stick = atkT = skT = null; pend.skill = null; pend.skill2 = null; pend.dash = false; keyAim = null; joinedAt = performance.now(); stuckT = 0; stuckPos = null;
+}
+
+/* ---------- modos de jogo ---------- */
+function startOffline() {
+  getName(); mode = 'off'; world = new S.World({ bots: 14 });
+  myId = world.addPlayer(pname, cls, false).id; enterPlay();
+}
+function respawnOffline() { getName(); world.dead.delete(myId); myId = world.addPlayer(pname, cls, false).id; enterPlay(); }
+/* ---------- salas online (o anfitrião é o servidor; conexão direta via WebRTC/PeerJS) ---------- */
+const PREFIX = 'slopdeia-', CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', MAXG = 7;
+const PEER_OPTS = { config: { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:global.stun.twilio.com:3478' }] } };
+const NETFAIL = 'Não consegui falar com o serviço de salas. Confira a internet e tente de novo. Dentro da prévia do Claude o modo online fica bloqueado: use a versão hospedada do jogo.';
+function newCode() { let c = ''; for (let i = 0; i < 5; i++) c += CODE_CHARS[(Math.random() * CODE_CHARS.length) | 0]; return c; }
+function setMsg(t, err) { const m = $('msg'); m.style.color = err ? '#c0392b' : '#6b6a75'; m.textContent = t || ''; }
+function needPeer() { if (typeof Peer === 'undefined') { setMsg('O módulo online não carregou. Confira a internet e recarregue a página.', true); return false; } return true; }
+function safeSend(conn, o) { try { if (conn.open) conn.send(o); } catch (e) {} }
+
+function setJoinBtn(on) { const b = $('rjgo'); if (b) { b.disabled = on; b.textContent = on ? 'Conectando…' : 'Entrar na sala'; } }
+function setHostBtn(on) { const b = $('rgo'); if (b) { b.disabled = on; b.textContent = on ? 'Abrindo sala…' : 'Abrir sala e jogar'; } }
+function toast(t, ms) { const el = $('toast'); el.textContent = t; el.classList.remove('hidden'); clearTimeout(toastT); toastT = setTimeout(() => el.classList.add('hidden'), ms || 2600); }
+
+function hostRoom(pw, bots, tries) {
+  if (hosting && !tries) return;
+  if (!needPeer()) return; tries = tries || 0; hosting = true; setHostBtn(true); setMsg('Abrindo sala…');
+  const code = newCode(); let opened = false;
+  const pr = new Peer(PREFIX + code, PEER_OPTS);
+  const fail = t => { hosting = false; setHostBtn(false); setMsg(t, true); };
+  const to = setTimeout(() => { if (!opened) { try { pr.destroy(); } catch (e) {} fail(NETFAIL); } }, 12000);
+  pr.on('open', () => {
+    opened = true; clearTimeout(to); getName(); hosting = false; setHostBtn(false);
+    peer = pr; roomCode = code; roomPw = pw; mode = 'host'; guests.clear(); evBuf.length = 0; hostNetAcc = 0;
+    world = new S.World({ pvp: true, bots: bots ? 4 : 0 });
+    myId = world.addPlayer(pname, cls, false, 'host').id; enterPlay(); setMsg('');
+    try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {}
+  });
+  pr.on('connection', onGuestConn);
+  pr.on('disconnected', () => { try { pr.reconnect(); } catch (e) {} });
+  pr.on('error', e => {
+    if (opened) return; clearTimeout(to); try { pr.destroy(); } catch (x) {}
+    if (e && e.type === 'unavailable-id' && tries < 5) hostRoom(pw, bots, tries + 1); else fail(NETFAIL);
+  });
+}
+function onGuestConn(conn) {
+  const g = { pid: 0, alive: false, key: '' };
+  conn.on('data', m => {
+    if (!m || typeof m !== 'object' || !world) return;
+    if (m.t === 'join') {
+      if (g.alive && world.players.has(g.pid)) return;
+      if (!guests.has(conn)) {
+        if (roomPw && String(m.pw || '') !== roomPw) { safeSend(conn, { t: 'e', msg: 'Senha incorreta.' }); setTimeout(() => { try { conn.close(); } catch (e) {} }, 400); return; }
+        g.key = 'u' + (String(m.uid || '').replace(/[^a-z0-9]/gi, '').slice(0, 12) || String(conn.peer || Math.random()));
+        for (const [c2, g2] of Array.from(guests)) if (c2 !== conn && g2.key === g.key) { guests.delete(c2); if (world) world.players.delete(g2.pid); try { c2.close(); } catch (e) {} }
+        if (guests.size >= MAXG) { safeSend(conn, { t: 'e', msg: 'Sala cheia.' }); setTimeout(() => { try { conn.close(); } catch (e) {} }, 400); return; }
+        guests.set(conn, g);
+      }
+      const nm = String(m.name || 'Bichinho').replace(/[<>]/g, '').slice(0, 14) || 'Bichinho';
+      const p = world.addPlayer(nm, m.cls, false, g.key); g.pid = p.id; g.alive = true; safeSend(conn, { t: 'w', id: p.id });
+    } else if (m.t === 'in' && g.alive) world.setInput(g.pid, m);
+  });
+  conn.on('close', () => {
+    if (g.pid && world) world.players.delete(g.pid); guests.delete(conn);
+    const k = g.key; if (!k) return;
+    setTimeout(() => { if (!world) return; for (const x of guests.values()) if (x.key === k) return; world.board.delete(k); }, 20000);
+  });
+  conn.on('error', () => {});
+}
+function sendGuests() {
+  const keep = world.events; world.events = evBuf;
+  for (const [conn, g] of guests) {
+    if (!g.alive) continue;
+    if (!world.players.has(g.pid)) { g.alive = false; safeSend(conn, { t: 'd', info: world.dead.get(g.pid) || null }); continue; }
+    const sn = world.snapshot(g.pid); sn.t = 's'; safeSend(conn, sn);
+  }
+  world.events = keep; evBuf.length = 0;
+}
+
+function joinRoom(code, pw, silent) {
+  if (joining) return;
+  if (!needPeer()) return;
+  code = String(code || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (code.length < 4) { setMsg('Digite o código da sala.', true); return; }
+  getName(); lastPw = pw || ''; joining = true; setJoinBtn(true); setMsg('Procurando a sala…'); mode = 'guest'; roomCode = code;
+  let done = false, conn0 = null;
+  const pr = new Peer(PEER_OPTS);
+  const fail = t => {
+    if (done) return; done = true; joining = false; clearTimeout(to); setJoinBtn(false);
+    try { pr.destroy(); } catch (e) {} if (peer === pr) peer = null; link = null;
+    if (silent) { toMenu(); } setMsg(t, true);
+  };
+  const to = setTimeout(() => fail('A sala não respondeu. Confira o código e a internet dos dois lados.'), 15000);
+  pr.on('error', e => { if (!done) fail(e && e.type === 'peer-unavailable' ? 'Sala não encontrada. Confira o código.' : NETFAIL); });
+  pr.on('open', () => {
+    if (done) return;
+    const conn = pr.connect(PREFIX + code, { reliable: true, serialization: 'json' }); conn0 = conn;
+    conn.on('open', () => {
+      if (done || conn !== conn0) return;
+      peer = pr; link = { conn, send: o => { try { if (conn.open) conn.send(o); } catch (e) {} }, close: () => { try { conn.close(); } catch (e) {} } };
+      link.send({ t: 'join', name: pname, cls, pw: pw || '', uid: UID });
+    });
+    conn.on('data', m => {
+      if (!m || typeof m !== 'object' || conn !== conn0) return;
+      if (m.t === 'w') { done = true; joining = false; clearTimeout(to); setJoinBtn(false); myId = m.id; enterPlay(); setMsg(''); }
+      else if (m.t === 'e') fail(m.msg || 'Não foi possível entrar.');
+      else if (m.t === 's') applySnap(m);
+      else if (m.t === 'd') showDead(m.info);
+    });
+    conn.on('close', () => {
+      if (link && link.conn === conn) { link = null; if (state === 'play' || state === 'dead') { $('dead').classList.add('hidden'); toMenu(); setMsg('A sala foi encerrada pelo anfitrião.', true); } }
+      else if (!done) fail('Não consegui entrar na sala.');
+    });
+    conn.on('error', () => {});
+  });
+}
+function joinOnline() { if (link) link.send({ t: 'join', name: getName(), cls, uid: UID }); }
+function rejoinRoom() {
+  const now = performance.now();
+  if (mode !== 'guest' || !roomCode || joining || now - lastRejoin < 8000) return;
+  lastRejoin = now; const code = roomCode, pw = lastPw;
+  toast('Reconectando à sala…', 3500);
+  if (link) { const l = link; link = null; try { l.close(); } catch (e) {} }
+  if (peer) { try { peer.destroy(); } catch (e) {} peer = null; }
+  joinRoom(code, pw, true);
+}
+function joinOnline() { if (link) link.send({ t: 'join', name: getName(), cls }); }
+
+/* ---------- menu da partida / painel da sala ---------- */
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function roomLink() { return location.href.split('#')[0].split('?')[0] + '#sala=' + roomCode; }
+function copyText(t, btn) {
+  const o = btn.textContent, ok = () => { btn.textContent = 'Copiado!'; setTimeout(() => { btn.textContent = o; }, 1300); };
+  const fb = () => { const i = $('rlink'); if (i) { i.focus(); i.select(); } btn.textContent = 'Selecione e copie'; setTimeout(() => { btn.textContent = o; }, 2000); };
+  try { navigator.clipboard.writeText(t).then(ok, fb); } catch (e) { fb(); }
+}
+function refreshPlayers() {
+  const el = $('plist'); if (!el || !world || mode !== 'host') return;
+  el.innerHTML = Array.from(world.players.values()).map(p => esc(p.name) + (p.id === myId ? ' (você)' : '') + (p.bot ? ' 🤖' : '')).join('<br>');
+}
+function openRoom() {
+  const box = $('room'); let h = '';
+  if (mode === 'host') {
+    h += '<div class="rt">Sua sala</div><div class="rc">' + roomCode + (roomPw ? ' 🔒' : '') + '</div>' +
+      '<small>' + (roomPw ? 'Com senha.' : 'Sem senha.') + ' Passe o código ou o link aos amigos. Eles entram pela conexão desta tela, então deixe o jogo aberto.</small>' +
+      '<input id="rlink" readonly value="' + esc(roomLink()) + '">' +
+      '<div class="two"><button id="cpcode" class="sm">Copiar código</button><button id="cplink" class="sm">Copiar link</button></div>' +
+      (navigator.share ? '<button id="shr" class="sm">Compartilhar convite</button>' : '') +
+      '<div class="rt">Na arena</div><div class="plist" id="plist"></div>';
+  } else if (mode === 'guest') h += '<div class="rt">Sala ' + esc(roomCode) + '</div><small>Você está jogando na sala de outro jogador.</small>';
+  else h += '<div class="rt">Modo offline</div><small>Ao sair, o progresso desta partida é perdido.</small>';
+  h += '<button id="leave" class="big">Sair da partida</button>';
+  box.innerHTML = h; box.classList.remove('hidden');
+  if ($('cpcode')) { $('cpcode').onclick = () => copyText(roomCode, $('cpcode')); $('cplink').onclick = () => copyText(roomLink(), $('cplink')); }
+  if ($('shr')) $('shr').onclick = () => { try { navigator.share({ title: 'SlopDe.IA', text: 'Entra na minha sala! Código ' + roomCode + (roomPw ? ' (com senha)' : ''), url: roomLink() }).catch(() => {}); } catch (e) {} };
+  $('leave').onclick = () => toMenu();
+  refreshPlayers();
+}
+$('menubtn').addEventListener('click', e => { e.stopPropagation(); if ($('room').classList.contains('hidden')) openRoom(); else $('room').classList.add('hidden'); });
+setInterval(refreshPlayers, 1000);
+function pickPw(on) { pwOn = on; $('pwno').classList.toggle('sel', !on); $('pwyes').classList.toggle('sel', on); $('rpw').classList.toggle('hidden', !on); if (on) $('rpw').focus(); }
+$('pwno').addEventListener('click', () => pickPw(false)); $('pwyes').addEventListener('click', () => pickPw(true));
+$('mkroom').addEventListener('click', () => { $('pmake').classList.remove('hidden'); $('pjoin').classList.add('hidden'); setMsg(''); });
+$('joinroom').addEventListener('click', () => { $('pjoin').classList.remove('hidden'); $('pmake').classList.add('hidden'); setMsg(''); });
+$('rgo').addEventListener('click', () => { const pw = pwOn ? $('rpw').value.trim() : ''; if (pwOn && !pw) { setMsg('Digite uma senha ou escolha “Sem senha”.', true); return; } snd(440, .1, 'triangle', .04); getName(); hostRoom(pw, $('rbots').checked); });
+$('rjgo').addEventListener('click', () => { snd(440, .1, 'triangle', .04); joinRoom($('rcode').value, $('rjpw').value.trim()); });
+$('rcode').addEventListener('input', e => { e.target.value = e.target.value.toUpperCase(); });
+function showDead(info) {
+  state = 'dead'; $('upbtn').classList.add('hidden'); $('ups').classList.add('hidden'); $('menubtn').classList.add('hidden'); $('room').classList.add('hidden');
+  info = info || {};
+  $('deadtxt').innerHTML = (info.by ? 'Derrotado por <b>' + String(info.by).replace(/</g, '&lt;') + '</b><br>' : '') + (info.pvp ? 'Abates na sala <b>' + (info.kills || 0) + '</b> • Mortes <b>' + (info.deaths || 0) + '</b><br><small>Seus abates ficam guardados ao voltar.</small>' : 'Nível <b>' + (info.lvl || 1) + '</b> • Abates <b>' + (info.kills || 0) + '</b> • Pontos <b>' + (info.score || 0) + '</b>');
+  $('dead').classList.remove('hidden'); snd(200, .5, 'sawtooth', .07, .3);
+}
+
+/* ---------- upgrades ---------- */
+let upKeys = ['weapon', 'skill', 'armor', 'vital'], upLast = 0;
+function buildUps() {
+  const box = $('ups'); box.innerHTML = '<div class="t">Gaste ouro 🪙 para evoluir</div>';
+  upKeys.forEach((k, i) => {
+    const b = document.createElement('button'); b.id = 'up' + i;
+    b.innerHTML = '<span></span><span></span>'; b.addEventListener('click', () => buy(i)); box.appendChild(b);
+  });
+}
+function buy(i) {
+  if (state !== 'play') return;
+  if (mode === 'off') { if (world.upgrade(myId, upKeys[i])) snd(660, .12, 'triangle', .05, 1.5); }
+}
+$('upbtn').addEventListener('click', e => { $('ups').classList.toggle('hidden'); e.stopPropagation(); });
+function updateUps(ts) {
+  if (!snap || !snap.me) return;
+  if (snap.pvp) { $('upbtn').classList.add('hidden'); $('ups').classList.add('hidden'); return; }
+  if (ts - upLast < 200) return; upLast = ts;
+  const m = snap.me, labels = CL[m.cls].labels; let n = 0;
+  for (let i = 0; i < 4; i++) {
+    const b = $('up' + i); if (!b) continue; const ok = m.gold >= m.co[i]; if (ok) n++;
+    b.className = ok ? 'ok' : ''; b.firstChild.textContent = (i + 1) + '. ' + labels[i] + ' Nv ' + m.up[i];
+    b.lastChild.textContent = '🪙 ' + m.co[i];
+  }
+  $('upbtn').textContent = '⬆ Upgrades' + (n ? ' (' + n + ')' : ''); $('upbtn').classList.toggle('pulse', n > 0);
+}
+
+/* ---------- entrada ---------- */
+window.addEventListener('keydown', e => {
+  if (e.target && e.target.tagName === 'INPUT') return;
+  const k = e.key.toLowerCase(); keys[k] = true; if (state !== 'play') return;
+  if (k === ' ' || k === 'shift') { pend.dash = true; e.preventDefault(); }
+  else if ((k === 'q' || k === 'e') && !keyAim) keyAim = { slot: k === 'q' ? 1 : 2, via: 'key', k };
+  else if (k >= '1' && k <= '4') buy(+k - 1);
+  else if (k === 'u') $('ups').classList.toggle('hidden');
+  usingTouch = false;
+});
+window.addEventListener('keyup', e => {
+  const k = e.key.toLowerCase(); keys[k] = false;
+  if (keyAim && keyAim.via === 'key' && keyAim.k === k) { if (state === 'play') castAim(keyAim.slot, 'mouse'); keyAim = null; }
+});
+window.addEventListener('contextmenu', e => e.preventDefault());
+function skillSpec(slot) { return CL[snap.me.cls].sk[slot - 1]; }
+function computeAim(slot, how) {
+  const sp = skillSpec(slot), maxR = sp.max || 0; let a = faceA, d = null;
+  if (how === 'touch' && skT) {
+    const b = slot === 1 ? B.skill : B.skill2, dx = skT.x - b.x, dy = skT.y - b.y, L = Math.hypot(dx, dy);
+    if (L > 16 * bs) { a = Math.atan2(dy, dx); d = clamp(L / (64 * bs), .15, 1) * (maxR || 1); }
+    else {
+      const t = nearestTarget(sp.k === 'target' ? maxR : (sp.len || sp.range || 400) + 60);
+      if (t) { a = t.a; d = t.d; } else { a = faceA; d = maxR * .55; }
+    }
+  } else { const dx = mouse.x - w / 2, dy = mouse.y - h / 2; a = Math.atan2(dy, dx); d = Math.hypot(dx, dy) / zoom; }
+  if (sp.k === 'target') d = clamp(d || 260, 70, maxR);
+  return { slot, a, sd: d || 260, sp };
+}
+function castAim(slot, how) { if (!snap) return; const ai = computeAim(slot, how); pend[slot === 1 ? 'skill' : 'skill2'] = { a: ai.a, sd: ai.sd }; }
+function currentAim() { if (!snap || state !== 'play') return null; if (skT) return computeAim(skT.slot, 'touch'); if (keyAim) return computeAim(keyAim.slot, 'mouse'); return null; }
+function hit(b, x, y) { return Math.hypot(x - b.x, y - b.y) < b.r + 8; }
+cv.addEventListener('pointerdown', e => {
+  if (state !== 'play') return; e.preventDefault();
+  if (e.pointerType === 'mouse') {
+    usingTouch = false; mouse.x = e.clientX; mouse.y = e.clientY;
+    if (e.button === 0) mouse.down = true; else if (e.button === 2 && !keyAim) keyAim = { slot: 1, via: 'mouse' };
+    return;
+  }
+  usingTouch = true; const x = e.clientX, y = e.clientY;
+  try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+  if (!atkT && hit(B.atk, x, y)) atkT = { id: e.pointerId, x, y };
+  else if (!skT && hit(B.skill, x, y)) skT = { slot: 1, id: e.pointerId, x, y };
+  else if (!skT && hit(B.skill2, x, y)) skT = { slot: 2, id: e.pointerId, x, y };
+  else if (hit(B.dash, x, y)) pend.dash = true;
+  else if (!stick && x < w * .6) stick = { id: e.pointerId, ox: x, oy: y, x, y };
+});
+cv.addEventListener('pointermove', e => {
+  if (e.pointerType === 'mouse') { mouse.x = e.clientX; mouse.y = e.clientY; return; }
+  if (stick && stick.id === e.pointerId) { stick.x = e.clientX; stick.y = e.clientY; }
+  if (atkT && atkT.id === e.pointerId) { atkT.x = e.clientX; atkT.y = e.clientY; }
+  if (skT && skT.id === e.pointerId) { skT.x = e.clientX; skT.y = e.clientY; }
+});
+function ptrUp(e) {
+  if (e.pointerType === 'mouse') {
+    if (e.button === 0) mouse.down = false;
+    else if (e.button === 2 && keyAim && keyAim.via === 'mouse') { castAim(1, 'mouse'); keyAim = null; }
+    return;
+  }
+  if (stick && stick.id === e.pointerId) stick = null;
+  if (atkT && atkT.id === e.pointerId) atkT = null;
+  if (skT && skT.id === e.pointerId) { castAim(skT.slot, 'touch'); skT = null; }
+}
+cv.addEventListener('pointerup', ptrUp); cv.addEventListener('pointercancel', ptrUp);
+window.addEventListener('blur', () => { mouse.down = false; keyAim = null; for (const k in keys) keys[k] = false; });
+
+function nearestTarget(range) {
+  if (!snap) return null; const me = snap.me; let best = null, bd = range;
+  const chk = (x, y) => { const d = Math.hypot(x - me.x, y - me.y); if (d < bd) { bd = d; best = { a: Math.atan2(y - me.y, x - me.x), d }; } };
+  for (const p of snap.pl) if (p.id !== me.id) chk(p.x, p.y);
+  for (const m of snap.mb) chk(m.x, m.y);
+  return best;
+}
+function buildInput() {
+  let mx = 0, my = 0;
+  if (keys.a || keys.arrowleft) mx -= 1; if (keys.d || keys.arrowright) mx += 1;
+  if (keys.w || keys.arrowup) my -= 1; if (keys.s || keys.arrowdown) my += 1;
+  if (stick) {
+    const dx = stick.x - stick.ox, dy = stick.y - stick.oy, L = Math.hypot(dx, dy), M = 55 * bs;
+    if (L > 8) { const k = Math.min(1, L / M); mx = dx / L * k; my = dy / L * k; }
+  }
+  const L = Math.hypot(mx, my); if (L > 1) { mx /= L; my /= L; }
+  let a = faceA, atk = false;
+  if (usingTouch) {
+    if (L > .15 && !atkT) faceA = a = Math.atan2(my, mx);
+    if (atkT) {
+      atk = true; const dx = atkT.x - B.atk.x, dy = atkT.y - B.atk.y;
+      if (Math.hypot(dx, dy) > 26 * bs) a = Math.atan2(dy, dx);
+      else { const t = nearestTarget((snap ? snap.me.rng : 300) + 90); if (t) a = t.a; else if (L > .15) a = Math.atan2(my, mx); }
+      faceA = a;
+    }
+  } else { a = Math.atan2(mouse.y - h / 2, mouse.x - w / 2); atk = mouse.down || !!keys.j; faceA = a; }
+  I.mx = mx; I.my = my; I.a = a; I.atk = atk; I.skill = false; I.skill2 = false; I.dash = false; I.sd = 260;
+  if (pend.skill) { I.skill = true; I.a = pend.skill.a; I.sd = pend.skill.sd; pend.skill = null; }
+  if (pend.skill2) { I.skill2 = true; I.a = pend.skill2.a; I.sd = pend.skill2.sd; pend.skill2 = null; }
+  if (pend.dash) { I.dash = true; pend.dash = false; }
+}
+
+/* ---------- snapshot / eventos ---------- */
+function applySnap(s) {
+  snap = s; snapT = performance.now();
+  for (const e of s.ev) onEvent(e);
+}
+function onEvent(e) {
+  const me = snap.me, near = Math.hypot(e.x - me.x, e.y - me.y) < 600;
+  switch (e.e) {
+    case 'slash': fxs.push({ k: 'arc', x: e.x, y: e.y, a: e.a, r: e.r, t: 0, m: .2 }); if (near) snd(240, .08, 'sawtooth', .025, .5, 'sl'); break;
+    case 'spin': fxs.push({ k: 'ring', x: e.x, y: e.y, r: e.r, t: 0, m: .3, c: '#ffe3b8' }); burst(e.x, e.y, '#ffe3b8', 10, 200); if (near) snd(300, .25, 'sawtooth', .05, 2, 'sp'); break;
+    case 'boom': fxs.push({ k: 'ring', x: e.x, y: e.y, r: e.r, t: 0, m: .4, c: '#ff9a6a', fill: 1 }); burst(e.x, e.y, '#ffb36b', 16, 240); if (near) snd(110, .3, 'sawtooth', .07, .4, 'bm'); break;
+    case 'dmg': texts.push({ x: e.x, y: e.y, v: e.v, t: 0, c: e.i === me.id ? '#ff6b6b' : '#fff' });
+      if (e.i === me.id) { shake = Math.min(10, shake + 3 + e.v * .05); snd(170, .1, 'square', .04, .5, 'hm'); } else if (near) snd(520, .05, 'triangle', .02, .7, 'hd');
+      burst(e.x, e.y + 10, '#fff', 3, 100); break;
+    case 'dash': burst(e.x, e.y, '#ffffff', 8, 140); if (near) snd(400, .12, 'sine', .03, 2, 'ds'); break;
+    case 'lvl': fxs.push({ k: 'ring', x: e.x, y: e.y, r: 90, t: 0, m: .6, c: '#ffd34d' }); burst(e.x, e.y, '#ffd34d', 18, 220);
+      if (e.i === me.id) { texts.push({ x: e.x, y: e.y - 40, v: 'NÍVEL ' + e.l + '!', t: 0, c: '#ffd34d', big: 1 }); snd(520, .3, 'triangle', .06, 2); } break;
+    case 'quake': fxs.push({ k: 'cone', x: e.x, y: e.y, a: e.a, r: e.r, t: 0, m: .3 }); burst(e.x + Math.cos(e.a) * e.r * .6, e.y + Math.sin(e.a) * e.r * .6, '#ffd9a0', 10, 220); shake = Math.min(10, shake + 2); if (near) snd(90, .3, 'sawtooth', .07, .5, 'qk'); break;
+    case 'beam': fxs.push({ k: 'beam', x: e.x, y: e.y, a: e.a, len: e.len, w: e.w, t: 0, m: .28 }); if (near) snd(700, .25, 'sawtooth', .05, .3, 'bmz'); break;
+    case 'death': burst(e.x, e.y, e.c, 26, 280); break;
+    case 'kill': feed.push({ a: e.a, b: e.b, t: 0 }); if (feed.length > 4) feed.shift(); break;
+  }
+}
+function D(key, x, y, vx, vy, now) {
+  const age = Math.min((now - snapT) / 1000, .1), px = x + vx * age, py = y + vy * age; let d = disp.get(key);
+  if (!d) { d = { x: px, y: py, f: frameNo }; disp.set(key, d); }
+  else { if (Math.hypot(px - d.x, py - d.y) > 300) { d.x = px; d.y = py; } else { d.x += (px - d.x) * kk; d.y += (py - d.y) * kk; } d.f = frameNo; }
+  return d;
+}
+
+/* ---------- desenho: criaturas ---------- */
+function drawBody(x, y, e, t, isMe) {
+  const c = CL[e.c], r = e.r, tier = e.t, id = e.id;
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(0, r * .85, r * .95, r * .35, 0, 0, TAU); ctx.fill();
+  if (isMe) { ctx.strokeStyle = 'rgba(255,255,255,.7)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(0, r * .85, r * 1.15, r * .45, 0, 0, TAU); ctx.stroke(); }
+  if (tier >= 3) { const pr = r * (1.55 + .1 * Math.sin(t * 3 + id)); ctx.strokeStyle = hexA(c.color, .55); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, pr, 0, TAU); ctx.stroke(); }
+  if (tier >= 6) { ctx.fillStyle = hexA(c.color, .6); for (const s of [-1, 1]) { ctx.save(); ctx.scale(s, 1); ctx.rotate(.15 * Math.sin(t * 4 + id)); ctx.beginPath(); ctx.moveTo(r * .6, -r * .1); ctx.quadraticCurveTo(r * 2.2, -r * 1.5, r * 2.0, r * .3); ctx.quadraticCurveTo(r * 1.4, r * .1, r * .6, r * .3); ctx.fill(); ctx.restore(); } }
+  const sq = 1 + .04 * Math.sin(t * 6 + id); ctx.save(); ctx.scale(sq, 1 / sq);
+  if (e.d) ctx.globalAlpha = .55;
+  // orelhinhas / chapéus
+  if (e.c === 'guerreiro') { ctx.fillStyle = '#ffe0a3'; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * r * .35, -r * .8); ctx.lineTo(s * r * .85, -r * 1.45); ctx.lineTo(s * r * .75, -r * .55); ctx.fill(); } }
+  else if (e.c === 'arqueiro') { ctx.fillStyle = c.dark; for (const s of [-1, 1]) { ctx.beginPath(); ctx.ellipse(s * r * .75, -r * .75, r * .3, r * .5, s * .5, 0, TAU); ctx.fill(); } }
+  // corpo
+  ctx.fillStyle = c.color; ctx.strokeStyle = c.dark; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,.3)'; ctx.beginPath(); ctx.ellipse(0, r * .28, r * .62, r * .5, 0, 0, TAU); ctx.fill();
+  if (tier >= 2) { ctx.fillStyle = hexA(c.dark, .85); ctx.beginPath(); ctx.arc(0, 0, r, .25, Math.PI - .25); ctx.arc(0, r * .15, r * .85, Math.PI - .35, .35, true); ctx.fill(); }
+  // olhos
+  const ex = Math.cos(e.a) * r * .1, ey = Math.sin(e.a) * r * .08;
+  for (const s of [-1, 1]) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s * r * .32 + ex, -r * .15 + ey, r * .22, 0, TAU); ctx.fill(); ctx.fillStyle = '#2b2a33'; ctx.beginPath(); ctx.arc(s * r * .32 + ex * 2.2, -r * .15 + ey * 2.2, r * .11, 0, TAU); ctx.fill(); ctx.fillStyle = 'rgba(255,120,150,.5)'; ctx.beginPath(); ctx.arc(s * r * .6, r * .12, r * .12, 0, TAU); ctx.fill(); }
+  if (e.c === 'mago') { ctx.fillStyle = c.dark; ctx.beginPath(); ctx.moveTo(-r * .85, -r * .55); ctx.lineTo(r * .85, -r * .55); ctx.lineTo(r * .1, -r * 1.85); ctx.closePath(); ctx.fill(); ctx.fillStyle = '#ffd34d'; ctx.beginPath(); ctx.arc(r * .1, -r * 1.0, r * .13, 0, TAU); ctx.fill(); }
+  if (tier >= 4) { const cy = e.c === 'mago' ? -r * 1.75 : -r * 1.0; ctx.fillStyle = '#ffd34d'; ctx.strokeStyle = '#c79a1d'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-r * .5, cy); ctx.lineTo(-r * .5, cy - r * .5); ctx.lineTo(-r * .25, cy - r * .25); ctx.lineTo(0, cy - r * .6); ctx.lineTo(r * .25, cy - r * .25); ctx.lineTo(r * .5, cy - r * .5); ctx.lineTo(r * .5, cy); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+  ctx.restore();
+  // arma
+  ctx.rotate(e.a);
+  if (e.c === 'guerreiro') {
+    const ang = e.s > 0 ? -1.1 + (1 - e.s / .2) * 2.2 : .75; ctx.save(); ctx.rotate(ang); ctx.fillStyle = '#8a6a3b'; ctx.fillRect(r * .75, -3, 10, 6);
+    ctx.fillStyle = '#ffd34d'; ctx.fillRect(r * .75 + 8, -7, 4, 14); ctx.fillStyle = '#eef3f9'; ctx.strokeStyle = '#8b97a6'; ctx.lineWidth = 1.5; rr(r * .75 + 12, -4.5, 30 + r * .6, 9, 4); ctx.fill(); ctx.stroke(); ctx.restore();
+  } else if (e.c === 'mago') {
+    ctx.strokeStyle = '#8a6a3b'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(0, r * .6); ctx.lineTo(r * 1.9, r * .6); ctx.stroke();
+    const g = 7 + 2 * Math.sin(t * 8); ctx.fillStyle = 'rgba(200,180,255,.35)'; ctx.beginPath(); ctx.arc(r * 1.9, r * .6, g * 1.7, 0, TAU); ctx.fill(); ctx.fillStyle = '#d9ccff'; ctx.beginPath(); ctx.arc(r * 1.9, r * .6, g, 0, TAU); ctx.fill();
+  } else {
+    ctx.strokeStyle = '#8a6a3b'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(r * .35, 0, r * 1.05, -1.1, 1.1); ctx.stroke();
+    ctx.strokeStyle = '#eee'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(r * .35 + Math.cos(-1.1) * r * 1.05, Math.sin(-1.1) * r * 1.05); ctx.lineTo(r * .35 + Math.cos(1.1) * r * 1.05, Math.sin(1.1) * r * 1.05); ctx.stroke();
+  }
+  ctx.restore();
+}
+function eyes(r, col, dy, sp) { for (const s of [-1, 1]) { ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(s * r * sp, dy, r * .2, 0, TAU); ctx.fill(); ctx.fillStyle = col; ctx.beginPath(); ctx.arc(s * r * sp, dy + 1, r * .1, 0, TAU); ctx.fill(); } }
+function drawMob(m, x, y, t) {
+  const r = m.r, tier = m.t, sq = 1 + .06 * Math.sin(t * 5 + m.id);
+  ctx.save(); ctx.translate(x, y); ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.beginPath(); ctx.ellipse(0, r * .85, r * .95, r * .32, 0, 0, TAU); ctx.fill();
+  ctx.lineWidth = 3; ctx.lineJoin = 'round';
+  if (tier === 0) {
+    ctx.fillStyle = '#7be08f'; ctx.strokeStyle = '#3fa860'; ctx.beginPath(); ctx.ellipse(0, r * .15, r * sq, r * .85 / sq, 0, 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.4)'; ctx.beginPath(); ctx.ellipse(-r * .35, -r * .35, r * .22, r * .12, -.5, 0, TAU); ctx.fill(); eyes(r, '#222', -r * .1, .32);
+  } else if (tier === 1) {
+    ctx.fillStyle = '#f5e6c8'; ctx.strokeStyle = '#b89d6a'; rr(-r * .5, -r * .1, r, r * .95, r * .3); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#ff6b6b'; ctx.strokeStyle = '#b53a3a'; ctx.beginPath(); ctx.ellipse(0, -r * .15, r * 1.05 * sq, r * .75, 0, Math.PI, TAU); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff'; for (const p of [[-.5, -.5], [.1, -.7], [.55, -.4]]) { ctx.beginPath(); ctx.arc(p[0] * r, p[1] * r, r * .13, 0, TAU); ctx.fill(); } eyes(r, '#222', r * .25, .2);
+  } else if (tier === 2) {
+    ctx.fillStyle = '#b8c0c8'; ctx.strokeStyle = '#6f7a85'; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.stroke();
+    for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * r * .3, -r * .8); ctx.lineTo(s * r * .85, -r * 1.35); ctx.lineTo(s * r * .85, -r * .35); ctx.fill(); ctx.stroke(); }
+    eyes(r, '#c0392b', -r * .1, .35); ctx.fillStyle = '#fff'; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * r * .22, r * .35); ctx.lineTo(s * r * .1, r * .62); ctx.lineTo(s * r * .34, r * .5); ctx.fill(); }
+  } else if (tier === 3) {
+    ctx.fillStyle = '#9aa3ad'; ctx.strokeStyle = '#5f6872'; rr(-r, -r * .9, r * 2, r * 1.8, r * .35); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#6f7882'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-r * .5, -r * .9); ctx.lineTo(-r * .3, -r * .4); ctx.lineTo(-r * .55, -r * .1); ctx.stroke();
+    ctx.fillStyle = '#ffd34d'; for (const s of [-1, 1]) { ctx.beginPath(); ctx.arc(s * r * .38, -r * .2, r * .17, 0, TAU); ctx.fill(); }
+  } else {
+    const f = 1 + .1 * Math.sin(t * 9 + m.id); ctx.fillStyle = 'rgba(255,120,60,.35)'; ctx.beginPath(); ctx.arc(0, 0, r * 1.35 * f, 0, TAU); ctx.fill();
+    ctx.fillStyle = '#c0392b'; ctx.strokeStyle = '#6e1f16'; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#2b0f0c'; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * r * .45, -r * .8); ctx.lineTo(s * r * .95, -r * 1.7); ctx.lineTo(s * r * .95, -r * .45); ctx.fill(); }
+    ctx.fillStyle = '#ffe14d'; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(s * r * .15, -r * .05); ctx.lineTo(s * r * .6, -r * .3); ctx.lineTo(s * r * .5, r * .12); ctx.fill(); }
+    ctx.fillStyle = '#2b0f0c'; ctx.beginPath(); ctx.arc(0, r * .42, r * .3, 0, Math.PI); ctx.fill();
+  }
+  ctx.restore();
+  if (m.hp < m.mh) { const bw = r * 1.8; ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fillRect(x - bw / 2, y - r - 14, bw, 5); ctx.fillStyle = '#ff6b6b'; ctx.fillRect(x - bw / 2, y - r - 14, bw * m.hp / m.mh, 5); }
+}
+function drawLabel(p, x, y, isMe) {
+  const top = y - p.r - (p.c === 'mago' ? p.r * 1.6 : p.r * (p.t >= 4 ? 1.4 : .5)) - 6;
+  const bw = Math.max(56, p.r * 3);
+  ctx.fillStyle = 'rgba(0,0,0,.5)'; rr(x - bw / 2, top, bw, 7, 3.5); ctx.fill();
+  const f = clamp(p.hp / p.mh, 0, 1); ctx.fillStyle = f > .5 ? '#6fe07a' : f > .25 ? '#ffd34d' : '#ff6b6b'; rr(x - bw / 2, top, Math.max(4, bw * f), 7, 3.5); ctx.fill();
+  txt('Lv ' + p.l + ' ' + p.n, x, top - 9, 13, isMe ? '#ffe89a' : '#fff');
+}
+
+/* ---------- previa de mira ---------- */
+function drawAim(me, cx, cy) {
+  const ai = currentAim(), c = CL[me.cls];
+  ctx.save(); ctx.translate(cx, cy); ctx.lineCap = 'round';
+  if (!ai) {
+    if ((atkT || (!usingTouch && mouse.down)) && c.range > 200) { ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.lineWidth = 3; ctx.setLineDash([4, 10]); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(faceA) * Math.min(c.range, 620), Math.sin(faceA) * Math.min(c.range, 620)); ctx.stroke(); ctx.setLineDash([]); }
+    ctx.restore(); return;
+  }
+  const sp = ai.sp, a = ai.a, col = slotCol(ai.slot), fill = col.f, line = col.l;
+  ctx.fillStyle = fill; ctx.strokeStyle = line; ctx.lineWidth = 3;
+  if (sp.k === 'circle') { ctx.beginPath(); ctx.arc(0, 0, sp.r + 18, 0, TAU); ctx.fill(); ctx.stroke(); }
+  else if (sp.k === 'cone') { ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, sp.range + 18, a - sp.ang, a + sp.ang); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+  else if (sp.k === 'target') {
+    const tx = Math.cos(a) * ai.sd, ty = Math.sin(a) * ai.sd;
+    ctx.setLineDash([10, 8]); ctx.beginPath(); ctx.arc(0, 0, sp.max, 0, TAU); ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.strokeStyle = line; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(tx, ty); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(tx, ty, sp.r, 0, TAU); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(tx - 10, ty); ctx.lineTo(tx + 10, ty); ctx.moveTo(tx, ty - 10); ctx.lineTo(tx, ty + 10); ctx.stroke();
+  } else if (sp.k === 'line') { ctx.rotate(a); ctx.fillRect(0, -sp.w / 2, sp.len, sp.w); ctx.strokeRect(0, -sp.w / 2, sp.len, sp.w); }
+  else if (sp.k === 'fan') { for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a + i * sp.spread) * sp.len, Math.sin(a + i * sp.spread) * sp.len); ctx.stroke(); } ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, sp.len, a - 2 * sp.spread, a + 2 * sp.spread); ctx.closePath(); ctx.fill(); }
+  ctx.restore();
+  txt(sp.name, cx, cy - me.r * 2.4 - 22, 13, line);
+}
+function slotCol(slot) { return slot === 1 ? { f: 'rgba(143,123,255,.22)', l: 'rgba(200,190,255,.95)' } : { f: 'rgba(255,154,77,.22)', l: 'rgba(255,200,150,.95)' }; }
+
+/* ---------- render ---------- */
+function render(dt, now) {
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#1d2b22'; ctx.fillRect(0, 0, w, h);
+  if (!snap || !snap.me) { return; }
+  const me = snap.me; timeS += dt;
+  kk = (mode === 'off' || mode === 'host') ? 1 : 1 - Math.exp(-dt * 16);
+  const age = Math.min((now - snapT) / 1000, .1);
+  for (const p of snap.pl) p.dd = D('p' + p.id, p.x, p.y, p.vx, p.vy, now);
+  for (const m of snap.mb) m.dd = D('m' + m.id, m.x, m.y, m.vx, m.vy, now);
+  const meE = snap.pl.find(p => p.id === me.id);
+  let cx = meE ? meE.dd.x : me.x, cy = meE ? meE.dd.y : me.y;
+  me.r = meE ? meE.r : 18;
+  shake *= Math.exp(-dt * 10); const sx = (Math.random() - .5) * shake, sy = (Math.random() - .5) * shake;
+  ctx.save(); ctx.translate(w / 2 + sx, h / 2 + sy); ctx.scale(zoom, zoom); ctx.translate(-cx, -cy);
+  // chão
+  const T = 120, x0 = Math.floor((cx - w / 2 / zoom) / T) - 1, x1 = Math.floor((cx + w / 2 / zoom) / T) + 1, y0 = Math.floor((cy - h / 2 / zoom) / T) - 1, y1 = Math.floor((cy + h / 2 / zoom) / T) + 1;
+  for (let gx = x0; gx <= x1; gx++) for (let gy = y0; gy <= y1; gy++) {
+    if (gx < 0 || gy < 0 || gx * T >= WW || gy * T >= HH) continue;
+    const z = snap.pvp ? 0 : S.zoneTier(gx * T + T / 2, gy * T + T / 2); ctx.fillStyle = ZONE[z][(gx + gy) & 1]; ctx.fillRect(gx * T, gy * T, T + 1, T + 1);
+    const hv = hsh(gx, gy);
+    if (hv < .4) {
+      const px = gx * T + hsh(gx, gy + 99) * T, py = gy * T + hsh(gx + 77, gy) * T;
+      if (hv < .2) { ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(px - 5, py); ctx.lineTo(px - 7, py - 9); ctx.moveTo(px, py); ctx.lineTo(px, py - 11); ctx.moveTo(px + 5, py); ctx.lineTo(px + 7, py - 9); ctx.stroke(); }
+      else if (hv < .32) { ctx.fillStyle = hv < .26 ? '#fff' : '#ffb3d1'; for (let k = 0; k < 5; k++) { ctx.beginPath(); ctx.arc(px + Math.cos(k * 1.256) * 4, py + Math.sin(k * 1.256) * 4, 3, 0, TAU); ctx.fill(); } ctx.fillStyle = '#ffd34d'; ctx.beginPath(); ctx.arc(px, py, 2.5, 0, TAU); ctx.fill(); }
+      else { ctx.fillStyle = 'rgba(0,0,0,.14)'; ctx.beginPath(); ctx.ellipse(px, py + 3, 12, 6, 0, 0, TAU); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.28)'; ctx.beginPath(); ctx.ellipse(px, py, 11, 7, 0, 0, TAU); ctx.fill(); }
+    }
+  }
+  const A = snap.ar || [0, 0, WW, HH];
+  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 8; ctx.strokeRect(A[0], A[1], A[2] - A[0], A[3] - A[1]);
+  ctx.fillStyle = '#1d2b22'; const E = 4000, AH = A[3] - A[1], AW = A[2] - A[0]; ctx.fillRect(A[0] - E, A[1] - E, E, AH + 2 * E); ctx.fillRect(A[2], A[1] - E, E, AH + 2 * E); ctx.fillRect(A[0], A[1] - E, AW, E); ctx.fillRect(A[0], A[3], AW, E);
+  // telegrafia de meteoros
+  for (const m of snap.mt) { const f = clamp(1 - m[2] / .75, 0, 1); ctx.fillStyle = 'rgba(255,90,60,' + (.12 + f * .2) + ')'; ctx.strokeStyle = 'rgba(255,90,60,.8)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(m[0], m[1], m[3], 0, TAU); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.arc(m[0], m[1], m[3] * f, 0, TAU); ctx.stroke(); ctx.fillStyle = '#ff8a5c'; ctx.beginPath(); ctx.arc(m[0], m[1] - (1 - f) * 260, 16, 0, TAU); ctx.fill(); }
+  for (const b of snap.bm) { const f = clamp(1 - b[5] / .3, 0, 1); ctx.save(); ctx.translate(b[0], b[1]); ctx.rotate(b[2]); ctx.fillStyle = 'rgba(190,160,255,' + (.1 + f * .25) + ')'; ctx.strokeStyle = 'rgba(190,160,255,.9)'; ctx.lineWidth = 2; ctx.fillRect(0, -b[4] / 2, b[3], b[4]); ctx.strokeRect(0, -b[4] / 2, b[3], b[4]); ctx.restore(); }
+  drawAim(me, cx, cy);
+  // orbes
+  for (const o of snap.or) {
+    const bob = Math.sin(timeS * 4 + o[0]) * 2, c = ORBC[o[4]][o[3]];
+    if (o[3] === 0) { ctx.fillStyle = hexA(c, .25); ctx.beginPath(); ctx.arc(o[1], o[2] + bob, 13, 0, TAU); ctx.fill(); ctx.fillStyle = c; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(o[1], o[2] + bob - 8); ctx.lineTo(o[1] + 6, o[2] + bob); ctx.lineTo(o[1], o[2] + bob + 8); ctx.lineTo(o[1] - 6, o[2] + bob); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+    else { ctx.fillStyle = c; ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(o[1], o[2] + bob, 7, 0, TAU); ctx.fill(); ctx.stroke(); ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.beginPath(); ctx.arc(o[1] - 2, o[2] + bob - 2, 2, 0, TAU); ctx.fill(); }
+  }
+  // criaturas ordenadas por Y
+  const list = [];
+  for (const p of snap.pl) list.push({ y: p.dd.y, k: 0, e: p }); for (const m of snap.mb) list.push({ y: m.dd.y, k: 1, e: m });
+  list.sort((a, b) => a.y - b.y);
+  for (const it of list) {
+    const e = it.e, d = e.dd;
+    if (it.k === 0) {
+      if (e.d && Math.random() < .8) parts.push({ x: d.x, y: d.y, vx: 0, vy: 0, life: .25, m: .25, s: e.r * .7, c: CL[e.c].color });
+      drawBody(d.x, d.y, e, timeS, e.id === me.id);
+    } else drawMob(e, d.x, d.y, timeS);
+  }
+  for (const it of list) if (it.k === 0) drawLabel(it.e, it.e.dd.x, it.e.dd.y, it.e.id === me.id);
+  // projéteis
+  for (const q of snap.pr) {
+    const x = q[1] + q[3] * age, y = q[2] + q[4] * age;
+    if (q[5] === 2) { const a = Math.atan2(q[4], q[3]); ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.fillStyle = 'rgba(255,214,90,.35)'; ctx.fillRect(-60, -6, 70, 12); ctx.strokeStyle = '#ffe9a8'; ctx.lineWidth = 5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-26, 0); ctx.lineTo(12, 0); ctx.stroke(); ctx.fillStyle = '#fff6d6'; ctx.beginPath(); ctx.moveTo(24, 0); ctx.lineTo(10, -8); ctx.lineTo(10, 8); ctx.fill(); ctx.restore(); }
+    else if (q[5] === 0) { ctx.fillStyle = 'rgba(190,160,255,.35)'; ctx.beginPath(); ctx.arc(x, y, q[6] * 1.9, 0, TAU); ctx.fill(); ctx.fillStyle = '#e6dcff'; ctx.strokeStyle = '#8f7bff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(x, y, q[6], 0, TAU); ctx.fill(); ctx.stroke(); }
+    else { const a = Math.atan2(q[4], q[3]); ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.strokeStyle = '#d9c9a3'; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(8, 0); ctx.stroke(); ctx.fillStyle = '#e8eef5'; ctx.beginPath(); ctx.moveTo(14, 0); ctx.lineTo(6, -4); ctx.lineTo(6, 4); ctx.fill(); ctx.restore(); }
+  }
+  // fx
+  for (let i = fxs.length - 1; i >= 0; i--) {
+    const f = fxs[i]; f.t += dt; if (f.t >= f.m) { fxs.splice(i, 1); continue; } const k = f.t / f.m;
+    if (f.k === 'cone') { ctx.fillStyle = 'rgba(255,217,160,' + (.5 * (1 - k)) + ')'; ctx.strokeStyle = 'rgba(255,255,255,' + (1 - k) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(f.x, f.y); ctx.arc(f.x, f.y, f.r * (.5 + .5 * k), f.a - .7, f.a + .7); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+    else if (f.k === 'beam') { ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.a); ctx.fillStyle = 'rgba(210,190,255,' + (.9 * (1 - k)) + ')'; ctx.fillRect(0, -f.w * (1 - k) / 2, f.len, f.w * (1 - k)); ctx.fillStyle = 'rgba(255,255,255,' + (1 - k) + ')'; ctx.fillRect(0, -3, f.len, 6); ctx.restore(); }
+    else if (f.k === 'arc') { ctx.strokeStyle = 'rgba(255,255,255,' + (1 - k) + ')'; ctx.lineWidth = 10 * (1 - k) + 2; ctx.lineCap = 'round'; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * (.7 + .3 * k), f.a - 1.0, f.a + 1.0); ctx.stroke(); }
+    else { ctx.strokeStyle = hexA(f.c, 1 - k); ctx.lineWidth = 6 * (1 - k) + 1; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * (.3 + .7 * k), 0, TAU); ctx.stroke(); if (f.fill) { ctx.fillStyle = hexA(f.c, .25 * (1 - k)); ctx.fill(); } }
+  }
+  for (let i = parts.length - 1; i >= 0; i--) { const p = parts[i]; p.life -= dt; if (p.life <= 0) { parts.splice(i, 1); continue; } p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= .93; p.vy *= .93; ctx.globalAlpha = clamp(p.life / p.m, 0, 1); ctx.fillStyle = p.c; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, TAU); ctx.fill(); }
+  ctx.globalAlpha = 1;
+  for (let i = texts.length - 1; i >= 0; i--) { const t = texts[i]; t.t += dt; if (t.t > .9) { texts.splice(i, 1); continue; } ctx.globalAlpha = clamp(1.2 - t.t, 0, 1); txt(String(t.v), t.x, t.y - t.t * 50, t.big ? 24 : 15 + Math.min(10, t.v / 20), t.c); }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+  drawHUD(me, dt);
+  if (frameNo % 120 === 0) for (const [k, v] of disp) if (v.f < frameNo - 60) disp.delete(k);
+}
+
+/* ---------- HUD ---------- */
+function drawHUD(me, dt) {
+  const hpf = me.hp / me.mh;
+  if (hpf < .3) { const g = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .35, w / 2, h / 2, Math.max(w, h) * .7); g.addColorStop(0, 'rgba(255,0,0,0)'); g.addColorStop(1, 'rgba(255,0,0,' + (.5 - hpf) * .9 + ')'); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h); }
+  // barras centrais
+  const bw = Math.min(340, w * .5), bx = w / 2 - bw / 2, by = 14;
+  ctx.fillStyle = 'rgba(0,0,0,.5)'; rr(bx, by, bw, 20, 10); ctx.fill();
+  ctx.fillStyle = hpf > .5 ? '#6fe07a' : hpf > .25 ? '#ffd34d' : '#ff6b6b'; rr(bx, by, Math.max(10, bw * clamp(hpf, 0, 1)), 20, 10); ctx.fill();
+  txt(me.hp + ' / ' + me.mh, w / 2, by + 10, 12);
+  if (snap.pvp) { txt('⚔ Arena PVP • ' + me.kills + ' abates', w / 2, by + 44, 14, '#ffe89a'); }
+  else {
+    ctx.fillStyle = 'rgba(0,0,0,.5)'; rr(bx, by + 24, bw, 12, 6); ctx.fill();
+    ctx.fillStyle = '#6fb7ff'; rr(bx, by + 24, Math.max(8, bw * clamp(me.xp / me.xn, 0, 1)), 12, 6); ctx.fill();
+    txt('Nv ' + me.lvl + ' • ' + me.tn, w / 2, by + 52, 14, '#ffe89a');
+    txt('🪙 ' + me.gold + '   ⚔ ' + me.kills, w / 2, by + 72, 13);
+  }
+  // ranking
+  const lx = 10, ly = 10; ctx.fillStyle = 'rgba(0,0,0,.35)'; rr(lx, ly, 150, 20 + snap.lb.length * 17, 10); ctx.fill();
+  txt(snap.pvp ? '🏆 Abates' : '🏆 Ranking', lx + 8, ly + 11, 12, '#ffd34d', 'left');
+  snap.lb.forEach((e, i) => txt((i + 1) + '. ' + e.n + '  ' + e.l, lx + 8, ly + 29 + i * 17, 12, e.id === me.id ? '#ffe89a' : '#fff', 'left', false));
+  // kill feed
+  for (let i = feed.length - 1; i >= 0; i--) { feed[i].t += dt; if (feed[i].t > 5) feed.splice(i, 1); }
+  feed.forEach((f, i) => { ctx.globalAlpha = clamp(5 - f.t, 0, 1); txt(f.a + ' ➜ ' + f.b, w / 2, by + (snap.pvp ? 68 : 96) + i * 16, 12, '#ffb3b3'); }); ctx.globalAlpha = 1;
+  // minimapa
+  const AR = snap.ar || [0, 0, WW, HH], ms = Math.min(116, w * .24), mx0 = w - ms - 10, my0 = 10, k = ms / (AR[2] - AR[0]);
+  ctx.save(); ctx.beginPath(); rr(mx0, my0, ms, ms, 12); ctx.clip(); ctx.fillStyle = ZONE[0][0]; ctx.fillRect(mx0, my0, ms, ms);
+  if (!snap.pvp) [.8, .62, .42, .22].forEach((f, i) => { ctx.fillStyle = ZONE[i + 1][0]; ctx.beginPath(); ctx.arc(mx0 + ms / 2, my0 + ms / 2, f * ms / 2, 0, TAU); ctx.fill(); });
+  for (const p of snap.pm) { const me2 = p[0] === me.id; ctx.fillStyle = me2 ? '#fff' : '#e8403a'; ctx.beginPath(); ctx.arc(mx0 + (p[1] - AR[0]) * k, my0 + (p[2] - AR[1]) * k, me2 ? 4 : 2.4, 0, TAU); ctx.fill(); if (me2) { ctx.strokeStyle = '#222'; ctx.lineWidth = 1.5; ctx.stroke(); } }
+  ctx.restore(); ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 2; rr(mx0, my0, ms, ms, 12); ctx.stroke();
+  if (usingTouch) drawTouch(me); else drawKbHud(me);
+}
+function drawCdBtn(b, icon, frac, left, col) {
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, TAU); ctx.fill();
+  ctx.fillStyle = col; ctx.globalAlpha = left > 0 ? .45 : .9; ctx.beginPath(); ctx.arc(b.x, b.y, b.r - 4, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+  if (left > 0) { ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.arc(b.x, b.y, b.r - 4, -Math.PI / 2, -Math.PI / 2 + TAU * frac); ctx.closePath(); ctx.fill(); }
+  ctx.font = Math.round(b.r * .8) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText(icon, b.x, b.y + 1);
+  if (left > 0) txt(left.toFixed(1), b.x, b.y, 14);
+}
+function drawTouch(me) {
+  if (stick) { ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.arc(stick.ox, stick.oy, 55 * bs, 0, TAU); ctx.fill(); const dx = stick.x - stick.ox, dy = stick.y - stick.oy, L = Math.hypot(dx, dy), M = 55 * bs, f = L > M ? M / L : 1; ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.beginPath(); ctx.arc(stick.ox + dx * f, stick.oy + dy * f, 24 * bs, 0, TAU); ctx.fill(); }
+  const col = CL[me.cls].color;
+  ctx.fillStyle = 'rgba(0,0,0,.35)'; ctx.beginPath(); ctx.arc(B.atk.x, B.atk.y, B.atk.r, 0, TAU); ctx.fill();
+  ctx.fillStyle = atkT ? '#ffb199' : col; ctx.globalAlpha = .9; ctx.beginPath(); ctx.arc(B.atk.x, B.atk.y, B.atk.r - 5, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
+  ctx.font = Math.round(B.atk.r * .8) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#fff'; ctx.fillText(CL[me.cls].emoji, B.atk.x, B.atk.y + 1);
+  if (atkT) { const dx = atkT.x - B.atk.x, dy = atkT.y - B.atk.y; if (Math.hypot(dx, dy) > 26 * bs) { ctx.strokeStyle = 'rgba(255,255,255,.8)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(B.atk.x, B.atk.y); ctx.lineTo(B.atk.x + dx, B.atk.y + dy); ctx.stroke(); } }
+  const sk = CL[me.cls].sk;
+  drawCdBtn(B.skill, sk[0].icon, me.cs[0] / me.cm[0], me.cs[0], '#8f7bff'); drawCdBtn(B.skill2, sk[1].icon, me.cs[2] / me.cm[2], me.cs[2], '#ff9a4d'); drawCdBtn(B.dash, '💨', me.cs[1] / me.cm[1], me.cs[1], '#4fb7ff');
+  if (skT) { const b = skT.slot === 1 ? B.skill : B.skill2; ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 3; ctx.setLineDash([8, 6]); ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(skT.x, skT.y); ctx.stroke(); ctx.setLineDash([]); }
+}
+function drawKbHud(me) {
+  const y = h - 42, sk = CL[me.cls].sk, b1 = { x: w / 2 - 80, y, r: 24 }, b2 = { x: w / 2, y, r: 24 }, db = { x: w / 2 + 80, y, r: 24 };
+  drawCdBtn(b1, sk[0].icon, me.cs[0] / me.cm[0], me.cs[0], '#8f7bff'); drawCdBtn(b2, sk[1].icon, me.cs[2] / me.cm[2], me.cs[2], '#ff9a4d'); drawCdBtn(db, '💨', me.cs[1] / me.cm[1], me.cs[1], '#4fb7ff');
+  txt('Q ' + sk[0].name, b1.x, y + 32, 11, '#fff'); txt('E ' + sk[1].name, b2.x, y + 32, 11, '#fff'); txt('ESPAÇO dash', db.x, y + 32, 11, '#fff');
+}
+
+/* ---------- loop ---------- */
+let last = performance.now(), acc = 0, netAcc = 0;
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(.05, (now - last) / 1000); last = now; frameNo++;
+  const playing = state === 'play';
+  if (playing) buildInput();
+  if (world && ((mode === 'off' && playing) || (mode === 'host' && (playing || state === 'dead')))) {
+    if (playing) world.setInput(myId, I);
+    acc += dt; while (acc >= 1 / 60) { world.step(1 / 60); acc -= 1 / 60; }
+    if (playing) { const sn = world.snapshot(myId); if (sn.dead) showDead(sn.info); else applySnap(sn); }
+    if (mode === 'host') {
+      for (const e of world.events) evBuf.push(e);
+      if (evBuf.length > 400) evBuf.splice(0, evBuf.length - 400);
+      hostNetAcc += dt; if (hostNetAcc >= .05) { hostNetAcc = 0; sendGuests(); }
+    }
+    world.flushEvents();
+  } else if (mode === 'guest' && link && playing) {
+    netAcc += dt;
+    if (netAcc >= .05 || I.skill || I.skill2 || I.dash) { netAcc = 0; link.send({ t: 'in', mx: +I.mx.toFixed(2), my: +I.my.toFixed(2), a: +I.a.toFixed(2), atk: I.atk, skill: I.skill, skill2: I.skill2, dash: I.dash, sd: Math.round(I.sd) }); }
+  }
+  if (mode === 'guest' && link && playing && snap) {
+    const nowMs = performance.now();
+    if (nowMs - Math.max(snapT, joinedAt) > 3000) rejoinRoom();
+    else if (snap.pvp && snap.me) {
+      const m = snap.me, A = snap.ar || [0, 0, WW, HH], pushing = Math.hypot(I.mx, I.my) > .5;
+      const nearWall = m.x < A[0] + 90 || m.x > A[2] - 90 || m.y < A[1] + 90 || m.y > A[3] - 90;
+      if (pushing && !nearWall) {
+        if (!stuckPos) { stuckPos = [m.x, m.y]; stuckT = 0; }
+        stuckT += dt;
+        if (Math.hypot(m.x - stuckPos[0], m.y - stuckPos[1]) > 14) { stuckPos = [m.x, m.y]; stuckT = 0; }
+        else if (stuckT > 2) { stuckPos = null; stuckT = 0; rejoinRoom(); }
+      } else { stuckPos = null; stuckT = 0; }
+    }
+  }
+  if (playing) updateUps(now);
+  if (state === 'dead' || state === 'play' || (state === 'menu' && snap)) render(dt, now); else { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#5fae5f'; ctx.fillRect(0, 0, w, h); }
+}
+requestAnimationFrame(frame);
+</script>
+
+
+
+</body></html>
